@@ -32,6 +32,7 @@ namespace BethanysPieShopHRM.Server.Pages
             {
                 new Marker{Description = $"{Employee.FirstName} {Employee.LastName}",  ShowPopup = false, X = Employee.Longitude, Y = Employee.Latitude}
             };
+
             JobCategory = (await JobCategoryDataService.GetJobCategoryById(Employee.JobCategoryId)).JobCategoryName;
         }
     }

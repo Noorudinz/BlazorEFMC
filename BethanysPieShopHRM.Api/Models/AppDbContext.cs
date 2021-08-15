@@ -14,6 +14,7 @@ namespace BethanysPieShopHRM.Api.Models
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<JobCategory> JobCategories { get; set; }
+        public DbSet<Company> Company { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,6 +63,20 @@ namespace BethanysPieShopHRM.Api.Models
                 Latitude = 50.8503, 
                 Longitude = 4.3517
             });
+
+            //modelBuilder.Entity<Company>().HasData(new Company
+            //{
+            //    OrgId = 1,
+            //    Org_Code = "EFMC",
+            //    Org_Name = "ELITE EFMC",
+            //    Org_Address = "Seef Manama",
+            //    Org_Zip = "100250",
+            //    Org_Email = "noorudeens@yahoo.in",
+            //    Org_Phone = "996290620",
+            //    Org_Website = "wwww.elite.com",
+            //    Org_Remarks = "ERP",
+            //    Org_Logo = null
+            //});
         }
     }
 }

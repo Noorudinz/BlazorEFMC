@@ -18,6 +18,7 @@ namespace BethanysPieShopHRM.Shared
         public string Org_Website { get; set; }
         public string Org_Remarks { get; set; }
         public string Org_Logo { get; set; }
+        public DateTime? updated_Date { get; set; }
        
 
     }

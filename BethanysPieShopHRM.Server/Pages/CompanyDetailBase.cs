@@ -1,4 +1,5 @@
 ﻿using BethanysPieShopHRM.ComponentsLibrary.Map;
+using BethanysPieShopHRM.Server.Components;
 using BethanysPieShopHRM.Server.Services;
 using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +20,7 @@ namespace BethanysPieShopHRM.Server.Pages
 
         public List<Marker> MapMarkers { get; set; } = new List<Marker>();
 
-        //protected AddEmployeeDialog AddEmployeeDialog { get; set; }
+        protected _EditCompanyDetail _EditCompanyDetailDialog { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -32,6 +33,17 @@ namespace BethanysPieShopHRM.Server.Pages
                 new Marker{Description = $"ELITE EFMC",  ShowPopup = false, X = 50.5592238711436, Y =  26.230605552338126}
             };
         }
-        
+
+        public async void EditCompany_OnDialogClose()
+        {
+            //Employees = (await EmployeeDataService.GetAllEmployees()).ToList();
+            //StateHasChanged();
+        }
+
+        protected void EditCompanyDialog()
+        {
+            _EditCompanyDetailDialog.Show();
+        }
+
     }
 }

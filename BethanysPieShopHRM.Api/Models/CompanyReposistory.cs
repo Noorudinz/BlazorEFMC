@@ -42,6 +42,7 @@ namespace BethanysPieShopHRM.Api.Models
                 foundCompany.Org_Website = company.Org_Website;
                 foundCompany.Org_Zip = company.Org_Zip;
                 foundCompany.Org_Logo = company.Org_Logo;
+                foundCompany.updated_Date = company.updated_Date;
 
                 _appDbContext.SaveChanges();
 

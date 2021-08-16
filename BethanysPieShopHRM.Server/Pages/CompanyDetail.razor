@@ -1,128 +1,137 @@
 ﻿@page "/companyDetail"
-@inherits CompanyDetailBase 
-
+@inherits CompanyDetailBase
 
 
 
 @*@if (Company == null)
-{
-<p><em>Loading...</em></p> }
-            else
+    {
+    <p><em>Loading...</em></p> }
+                else
+                {
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Employee ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Company)
             {
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Employee ID</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Company)
-        {
-<tr>
+    <tr>
 
-    <td>@employee.OrgId</td>
-    <td>@employee.Org_Name</td>
-    <td>@employee.Org_Address</td>
-    <td>
-        <a href="@($"employeedetail/{employee.OrgId}")" class="btn btn-primary table-btn">
-            <i class="fas fa-info-circle"></i>
-        </a>
-        <a href="@($"employeeedit/{employee.OrgId}")" class="btn btn-primary table-btn">
-            <i class="fas fa-edit"></i>
-        </a>
-    </td>
-</tr>}
-    </tbody>
-</table>}*@
+        <td>@employee.OrgId</td>
+        <td>@employee.Org_Name</td>
+        <td>@employee.Org_Address</td>
+        <td>
+            <a href="@($"employeedetail/{employee.OrgId}")" class="btn btn-primary table-btn">
+                <i class="fas fa-info-circle"></i>
+            </a>
+            <a href="@($"employeeedit/{employee.OrgId}")" class="btn btn-primary table-btn">
+                <i class="fas fa-edit"></i>
+            </a>
+        </td>
+    </tr>}
+        </tbody>
+    </table>}*@
 
 @*<button @onclick="@QuickAddEmployee" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
 
-<AddEmployeeDialog @ref="AddEmployeeDialog" CloseEventCallback="@AddEmployeeDialog_OnDialogClose"></AddEmployeeDialog>*@
+    <AddEmployeeDialog @ref="AddEmployeeDialog" CloseEventCallback="@AddEmployeeDialog_OnDialogClose"></AddEmployeeDialog>*@
 
 
-    <h1 class="page-title">Details for ELITE EFMC</h1>
 
-    @{ var leadingFormat = "00000";
-        //var a = Employee.EmployeeId.ToString("00000");
-        }
+<h1 class="page-title">Details for ELITE EFMC</h1>
+
+@{ var leadingFormat = "00000";
+    //var a = Employee.EmployeeId.ToString("00000");
+}
 
 
-        <div class="col-12 row">
-            <div class="col-2">
-                <img src="images/elite.png" class="img-responsive rounded-circle employee-detail-img" />
+<div class="col-12 row">
+    <div class="col-2">
+        <img src="images/elite.png" class="img-responsive rounded-circle employee-detail-img" />
+    </div>
+    <div class="col-10 row">
+        <div class="col-xs-12 col-sm-8">
+
+         
+            <div class="form-group row">
+                <div class="col-lg-12 text-right">
+                    <button @onclick="@EditCompanyDialog" class="btn btn-outline-primary">Edit</button>
+                </div>
             </div>
-            <div class="col-10 row">          
-                <div class="col-xs-12 col-sm-8">
-                   
-                    <input type="hidden" value="@Company.OrgId.ToString(leadingFormat)" />
 
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Org code</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Code</label>
-                        </div>
-                    </div>
+            <input type="hidden" value="@Company.OrgId.ToString(leadingFormat)" />
 
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Org name</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Name</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Address</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Address</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Email</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Email</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Phone</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Phone</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Remarks</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Remarks</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Website</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Website</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Zip number</label>
-                        <div class="col-sm-8">
-                            <label type="text" readonly class="form-control-plaintext">@Company.Org_Zip</label>
-                        </div>
-                    </div>
-
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Org code</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Code</label>
                 </div>
-                <div class="col-xs-12 col-sm-4">
-                    <div class="track-order-map">
-                        <Map Zoom="10" Markers="MapMarkers"></Map>
-                    </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Org name</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Name</label>
                 </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Address</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Address</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Email</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Email</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Phone</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Phone</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Remarks</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Remarks</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Website</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Website</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Zip number</label>
+                <div class="col-sm-8">
+                    <label type="text" readonly class="form-control-plaintext">@Company.Org_Zip</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <div class="track-order-map">
+                <Map Zoom="10" Markers="MapMarkers"></Map>
             </div>
         </div>
+    </div>
+</div>
 
 
+
+<_EditCompanyDetail @ref="_EditCompanyDetailDialog" CloseEventCallback="@EditCompany_OnDialogClose"></_EditCompanyDetail>

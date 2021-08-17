@@ -18,7 +18,7 @@ namespace BethanysPieShopHRM.Api.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
 
             //seed categories
             //modelBuilder.Entity<Country>().HasData(new Country { CountryId = 1, Name = "Belgium" });
@@ -62,7 +62,7 @@ namespace BethanysPieShopHRM.Api.Models
             //    JoinedDate = new DateTime(2015, 3, 1),
             //    Latitude = 50.8503, 
             //    Longitude = 4.3517
-            //});
+            //});   
 
         }
     }

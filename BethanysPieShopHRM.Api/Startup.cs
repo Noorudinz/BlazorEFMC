@@ -1,10 +1,15 @@
+using BethanysPieShopHRM.Api.Data;
 using BethanysPieShopHRM.Api.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BethanysPieShopHRM.Api
 {
@@ -24,6 +29,27 @@ namespace BethanysPieShopHRM.Api
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<IdentityUser>()
+       .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+       .AddJwtBearer(options =>
+       {
+           options.TokenValidationParameters = new TokenValidationParameters
+           {
+               ValidateIssuer = true,
+               ValidateAudience = true,
+               ValidateLifetime = true,
+               ValidateIssuerSigningKey = true,
+               ValidIssuer = Configuration["JwtIssuer"],
+               ValidAudience = Configuration["JwtAudience"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
+           };
+       });
 
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
@@ -53,7 +79,10 @@ namespace BethanysPieShopHRM.Api
 
             app.UseAuthorization();
 
-           // app.UseCors("Open");
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            // app.UseCors("Open");
 
             app.UseEndpoints(endpoints =>
             {

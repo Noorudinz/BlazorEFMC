@@ -20,7 +20,7 @@ namespace BethanysPieShopHRM.Server.Pages
 
         public List<Marker> MapMarkers { get; set; } = new List<Marker>();
 
-        protected _EditCompanyDetail _EditCompanyDetailDialog { get; set; }
+        protected _EditCompanyDetailBase _EditCompanyDetailDialog { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

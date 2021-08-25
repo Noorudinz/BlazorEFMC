@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BethanysPieShopHRM.Server.Services;
+using Microsoft.AspNetCore.Identity;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BethanysPieShopHRM.Server
 {
@@ -24,7 +27,12 @@ namespace BethanysPieShopHRM.Server
         {
             services.AddRazorPages();
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
-            
+
+            services.AddBlazoredLocalStorage();
+            services.AddAuthorizationCore();
+            services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+            services.AddScoped<IAuthService, AuthService>();
+
             //services.AddScoped<HttpClient>(s =>
             //{
             //    var client = new HttpClient { BaseAddress = new System.Uri("https://localhost:44340/") };
@@ -47,6 +55,10 @@ namespace BethanysPieShopHRM.Server
                 client.BaseAddress = new Uri("https://localhost:44340/");
             });
             services.AddHttpClient<ICompanyDataService, CompanyDataService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44340/");
+            });
+            services.AddHttpClient<IAuthService, AuthService>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44340/");
             });

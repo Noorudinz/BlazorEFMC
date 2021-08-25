@@ -64,13 +64,14 @@
 
         var result = await AuthService.Register(RegisterModel);
 
-        if (result.IsSuccessStatusCode)
+        if (result.Successful)
         {
             NavigationManager.NavigateTo("/login");
         }
         else
         {
-            Errors = result.StatusCode.ToString();
+            var singleString = string.Join(",", result.Errors.ToArray());
+            Errors = singleString;
             ShowErrors = true;
         }
     }

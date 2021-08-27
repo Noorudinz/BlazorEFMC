@@ -16,9 +16,11 @@ namespace BethanysPieShopHRM.Api.Models
         public DbSet<JobCategory> JobCategories { get; set; }
         public DbSet<Company> Company { get; set; }
 
+        //public DbSet<RegisterModel> Registerv { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
             //seed categories
             //modelBuilder.Entity<Country>().HasData(new Country { CountryId = 1, Name = "Belgium" });

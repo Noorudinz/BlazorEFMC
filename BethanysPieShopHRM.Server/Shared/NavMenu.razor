@@ -15,15 +15,19 @@
     <NavLink class="list-group-item list-group-item-action bg-light" href="/" Match="NavLinkMatch.All">
         <span class="oi oi-home" aria-hidden="true"></span> About
     </NavLink>
-    <NavLink class="list-group-item list-group-item-action bg-light" href="/companyDetail">
-        <span class="oi oi-list-rich" aria-hidden="true"></span> CompanyDetail
-    </NavLink>
-    <NavLink class="list-group-item list-group-item-action bg-light" href="/employeeoverview">
-        <span class="oi oi-list-rich" aria-hidden="true"></span> Employees
-    </NavLink>
-    <NavLink class="list-group-item list-group-item-action bg-light" href="/employeeedit">
-        <span class="oi oi-list-rich" aria-hidden="true"></span> Add new employee
-    </NavLink>
+
+    <AuthorizeView>
+        <NavLink class="list-group-item list-group-item-action bg-light" href="/companyDetail">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> CompanyDetail
+        </NavLink>
+        <NavLink class="list-group-item list-group-item-action bg-light" href="/employeeoverview">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Employees
+        </NavLink>
+        <NavLink class="list-group-item list-group-item-action bg-light" href="/employeeedit">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Add new employee
+        </NavLink>
+    </AuthorizeView>
+ 
 </div>
 </div>
 

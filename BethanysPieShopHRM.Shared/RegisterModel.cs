@@ -33,4 +33,20 @@ namespace BethanysPieShopHRM.Shared
         public bool Successful { get; set; }
         public IEnumerable<string> Errors { get; set; }
     }
+
+    public class RolesVM
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string NormalizedName { get; set; }
+        public string ConcurrencyStamp { get; set; }
+
+    }
+
+    public class RolesResultVM
+    {
+        public bool IsSuccess { get; set; }
+        public IEnumerable<string> Errors { get; set; }
+
+    }
 }

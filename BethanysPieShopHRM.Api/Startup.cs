@@ -34,8 +34,12 @@ namespace BethanysPieShopHRM.Api
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>()
-       .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+           .AddEntityFrameworkStores<ApplicationDbContext>();
+                       
+
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        .AddJwtBearer(options =>
@@ -52,10 +56,13 @@ namespace BethanysPieShopHRM.Api
            };
        });
 
+            //services.AddIdentity<IdentityUser, ApplicationRole>();
+
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICompanyReposistory, CompanyReposistory>();
+         
             //services.AddTransient<IUserStore<IdentityUser>, UserStore<IdentityUser>>();
             //services.AddDbContext<ApplicationDbContext>();
             //services.AddIdentity<IdentityUser, IdentityRole>()

@@ -1,4 +1,6 @@
-﻿using BethanysPieShopHRM.Server.Services;
+﻿using BethanysPieShopHRM.Server.Components;
+using BethanysPieShopHRM.Server.Services;
+using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -12,24 +14,40 @@ namespace BethanysPieShopHRM.Server.Pages
         [Inject]
         public IRolesDataService RolesDataService { get; set; }
 
-        public List<Roles> RoleList { get; set; }
+        public List<RolesVM> RoleList { get; set; }
 
-        //protected AddEmployeeDialogBase AddEmployeeDialog { get; set; }
+        protected AddEditRoles AddEditRoleDialog { get; set; }
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    RoleList = (await EmployeeDataService.GetAllEmployees()).ToList();
-        //}
+        protected override async Task OnInitializedAsync()
+        {
+           
+           RoleList = (await RolesDataService.GetAllRoles()).ToList();         
+          
+        }
 
-        //public async void AddEmployeeDialog_OnDialogClose()
-        //{
-        //    Employees = (await EmployeeDataService.GetAllEmployees()).ToList();
-        //    StateHasChanged();
-        //}
+        public async void AddEditRolesDialog_OnDialogClose()
+        {
+            RoleList = (await RolesDataService.GetAllRoles()).ToList();
+            StateHasChanged();
+        }
 
-        //protected void QuickAddEmployee()
-        //{
-        //    AddEmployeeDialog.Show();
-        //}
+        //Add
+        protected void AddEditRoles()
+        {
+            AddEditRoleDialog.Show();
+        }
+
+        //Edit 
+        protected void AddEditRoles(string Id)
+        {
+            AddEditRoleDialog.ShowEdit(Id);
+        }    
+        
+        //deleter
+        protected void DeleteRoles(string Id)
+        {
+            AddEditRoleDialog.ShowDelete(Id);
+        }
+
     }
 }

@@ -11,7 +11,7 @@ namespace BethanysPieShopHRM.Server.Components
     public partial class AddEditRoles : ComponentBase
     {
         public bool ShowDialog { get; set; }
-
+        public bool ShowDeleteDialog { get; set; } = false;
         public string StatusClass { get; set; } = string.Empty;
         public string ErrorMsg { get; set; } = string.Empty;
 
@@ -40,6 +40,17 @@ namespace BethanysPieShopHRM.Server.Components
             StateHasChanged();
 
         }
+
+        public async void ShowDelete(string Id)
+        {
+            
+            role = await RoleDataService.GetRoleDetails(Id);
+            ShowDialog = false;
+            ShowDeleteDialog = true;
+            StateHasChanged();
+
+        }
+
         private void ResetDialog()
         {
             role = new RolesVM();
@@ -48,6 +59,7 @@ namespace BethanysPieShopHRM.Server.Components
         public void Close()
         {
             ShowDialog = false;
+            ShowDeleteDialog = false;
             StateHasChanged();
         }
 
@@ -72,5 +84,27 @@ namespace BethanysPieShopHRM.Server.Components
            
         }
 
+
+        protected async Task HandleDeleteSubmit()
+        {
+            var response = await RoleDataService.DeleteRole(role.id);
+
+            if (response.IsSuccess)
+            {
+                ShowDialog = false;
+                ShowDeleteDialog = false;
+
+                await CloseEventCallback.InvokeAsync(true);
+                StateHasChanged();
+            }
+            else
+            {
+                StatusClass = "alert-danger";
+                ErrorMsg = string.Join(",", response.Errors.ToArray());
+
+            }
+
+
+        }
     }
 }

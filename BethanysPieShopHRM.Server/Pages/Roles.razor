@@ -1,44 +1,46 @@
 ﻿@page "/roles"
 
 
-@*<h1 class="page-title">All roles</h1>
+<h1 class="page-title">All roles</h1>
 
-@if (Roles == null)
+@if (RoleList == null)
 {
-<p><em>Loading...</em></p> }
-            else
+    <p><em>Loading...</em></p> }
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Role Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in RoleList)
             {
-<table class="table">
-    <thead>
-        <tr>           
-            <th>Role Name</th>          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Employees)
-        {
-<tr>
-    <td><img src="@($"https://gillcleerenpluralsight.blob.core.windows.net/person/{employee.EmployeeId}-small.jpg")" class="rounded-circle" /></td>
-    <td>@employee.EmployeeId</td>
-    <td>@employee.FirstName</td>
-    <td>@employee.LastName</td>
-    <td>
-        <a href="@($"employeedetail/{employee.EmployeeId}")" class="btn btn-primary table-btn">
-            <i class="fas fa-info-circle"></i>
-        </a>
-        <a href="@($"employeeedit/{employee.EmployeeId}")" class="btn btn-primary table-btn">
-            <i class="fas fa-edit"></i>
-        </a>
-    </td>
-</tr>}
-    </tbody>
-</table>}
+                @if (role.Name != "admin")
+                {
+            <tr>
 
-<button @onclick="@QuickAddEmployee" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+                <td>@role.NormalizedName</td>
+                <td>
+                    <button @onclick="() => AddEditRoles(role.Id)" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
 
-<AddEmployeeDialog @ref="AddEmployeeDialog" CloseEventCallback="@AddEmployeeDialog_OnDialogClose"></AddEmployeeDialog>
+                </td>
+                <td>
+                    <button @onclick="() => DeleteRoles(role.Id)" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+                }
+
+            }
+        </tbody>
+    </table>}
+
+<button @onclick="@AddEditRoles" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+
+<AddEditRoles @ref="AddEditRoleDialog" CloseEventCallback="@AddEditRolesDialog_OnDialogClose"></AddEditRoles>
 
 @code {
 
-}*@
+}

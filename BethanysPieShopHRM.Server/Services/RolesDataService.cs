@@ -17,7 +17,7 @@ namespace BethanysPieShopHRM.Server.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<RolesResultVM> AddRole(RolesVM role)
+        public async Task<RolesResultVM> AddRoleOrEdit(RolesVM role)
         {
             try
             {
@@ -41,9 +41,28 @@ namespace BethanysPieShopHRM.Server.Services
           
         }
 
-        public async Task DeleteRole(string roleId)
+        public async Task<RolesResultVM> DeleteRole(RolesVM role)
         {
-            await _httpClient.DeleteAsync($"api/roles/{roleId}");
+            try
+            {
+                var roleAsJson = JsonSerializer.Serialize(role);
+
+                var response = await _httpClient.PostAsync("api/roles/DeleteRole", new StringContent(roleAsJson, Encoding.UTF8, "application/json"));
+
+                var deleteResult = JsonSerializer.Deserialize<RolesResultVM>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (!deleteResult.IsSuccess)
+                {
+                    return deleteResult;
+                }
+
+                return deleteResult;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            // await _httpClient.DeleteAsync($"api/roles/{roleId}");
         }
 
         public async Task<IEnumerable<RolesVM>> GetAllRoles()

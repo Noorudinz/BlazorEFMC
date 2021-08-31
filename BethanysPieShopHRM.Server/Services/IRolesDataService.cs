@@ -10,8 +10,7 @@ namespace BethanysPieShopHRM.Server.Services
     {
         Task<IEnumerable<RolesVM>> GetAllRoles();
         Task<RolesVM> GetRoleDetails(string roleId);
-        Task<RolesResultVM> AddRole(RolesVM role);
-        Task UpdateRole(RolesVM role);
-        Task DeleteRole(string roleId);
+        Task<RolesResultVM> AddRoleOrEdit(RolesVM role);
+        Task<RolesResultVM> DeleteRole(RolesVM roleId);
     }
 }

@@ -65,7 +65,7 @@ namespace BethanysPieShopHRM.Server.Components
 
         protected async Task HandleValidSubmit()
         {           
-            var response = await RoleDataService.AddRole(role);
+            var response = await RoleDataService.AddRoleOrEdit(role);
 
             if (response.IsSuccess)
             {
@@ -87,7 +87,8 @@ namespace BethanysPieShopHRM.Server.Components
 
         protected async Task HandleDeleteSubmit()
         {
-            var response = await RoleDataService.DeleteRole(role.id);
+            
+            var response = await RoleDataService.DeleteRole(role);
 
             if (response.IsSuccess)
             {

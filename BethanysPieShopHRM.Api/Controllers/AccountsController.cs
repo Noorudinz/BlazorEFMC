@@ -1,4 +1,5 @@
-﻿using BethanysPieShopHRM.Shared;
+﻿using BethanysPieShopHRM.Api.Models;
+using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,11 @@ namespace BethanysPieShopHRM.Api.Controllers
         //private static UserModel LoggedOutUser = new UserModel { IsAuthenticated = false };
 
         private readonly UserManager<IdentityUser> _userManager;
-
+       
         public AccountsController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
+          
         }
 
         [HttpPost]
@@ -41,6 +43,7 @@ namespace BethanysPieShopHRM.Api.Controllers
 
             return Ok(new RegisterResult { Successful = true });
 
-        }
+        }        
+     
     }
 }

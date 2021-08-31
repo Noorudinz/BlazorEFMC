@@ -117,18 +117,26 @@ namespace BethanysPieShopHRM.Server
 
         public string GetName(string token)
         {
-            string secret = "1234567890123234679875433355";
-            var key = Encoding.ASCII.GetBytes(secret);
-            var handler = new JwtSecurityTokenHandler();
-            var validations = new TokenValidationParameters
+            try
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-            var claims = handler.ValidateToken(token, validations, out var tokenSecure);
-            return claims.Identity.Name;
+                string secret = "1234567890123234679875433355";
+                var key = Encoding.ASCII.GetBytes(secret);
+                var handler = new JwtSecurityTokenHandler();
+                var validations = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                var claims = handler.ValidateToken(token, validations, out var tokenSecure);
+                return claims.Identity.Name;
+            }
+            catch(Exception ex)
+            {
+                return ex.ToString();
+            }
+        
         }
     }
 }

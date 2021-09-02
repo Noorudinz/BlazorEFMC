@@ -1,5 +1,4 @@
 ﻿@page "/dashboard"
-@inherits Dashboard
 @attribute [Authorize]
 <!-- Main content -->
 <section class="content">
@@ -7,61 +6,55 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
             <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>150</h3>
+                <!-- small box -->              
 
-                        <p>New Orders</p>
+                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">150</h5>
                     </div>
-                    <div class="icon">
-                        <i class="ion ion-bag"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <div class="card-body">
+                        <h5 class="card-title">New Orders</h5>
+                        <a href="#" class="card-text" style="color:black;">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>                   
                 </div>
             </div>
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                        <p>Bounce Rate</p>
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">53%</h5>
                     </div>
-                    <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Bounce rate</h5>
+                        <a href="#" class="card-text" style="color:black;">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>TotalUserRegister</h3>
-                        <p>User Registrations</p>
+                <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">5</h5>
                     </div>
-                    <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">User register</h5>
+                        <a href="#" class="card-text" style="color:black;">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
-                    <a href="Home/Customer" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>65</h3>
-
-                        <p>Unique Visitors</p>
+                <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">140</h5>
                     </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Unique visitor</h5>
+                        <a href="#" class="card-text" style="color:black;">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->

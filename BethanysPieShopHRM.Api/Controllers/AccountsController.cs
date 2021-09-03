@@ -49,6 +49,7 @@ namespace BethanysPieShopHRM.Api.Controllers
         [Route("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
+
             try
             {
                 var model = new List<UserModel>();
@@ -62,6 +63,7 @@ namespace BethanysPieShopHRM.Api.Controllers
             {
                 return null;
             }
+
         }
 
     }

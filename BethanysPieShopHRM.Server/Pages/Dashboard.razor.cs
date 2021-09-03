@@ -1,4 +1,4 @@
-﻿using BethanysPieShopHRM.Server.Services;
+using BethanysPieShopHRM.Server.Services;
 using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -15,8 +15,8 @@ namespace BethanysPieShopHRM.Server.Pages
         public int UserCount { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            UserCount = (await AuthDataService.GetAllUsers()).Count();
-           
+            UserCount = (await AuthDataService.GetAllUsers()).Count();           
+
         }
     }
 }

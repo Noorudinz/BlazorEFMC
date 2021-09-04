@@ -9,6 +9,7 @@ using BethanysPieShopHRM.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Syncfusion.Blazor;
 
 namespace BethanysPieShopHRM.Server
 {
@@ -32,6 +33,7 @@ namespace BethanysPieShopHRM.Server
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddSyncfusionBlazor();
 
             //services.AddScoped<HttpClient>(s =>
             //{
@@ -71,6 +73,7 @@ namespace BethanysPieShopHRM.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDczMjM5QDMxMzkyZTMyMmUzMEpUZ2s4RWEwbndiaUl1aU4rUW40NEU5YTBveHBaZ2FIUGhaN0VUU3k0RkU9");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

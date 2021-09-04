@@ -43,7 +43,29 @@ namespace BethanysPieShopHRM.Api.Controllers
 
             return Ok(new RegisterResult { Successful = true });
 
-        }        
-     
+        }
+
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public IActionResult GetAllUsers()
+        {
+
+            try
+            {
+                var model = new List<UserModel>();
+                var users = _userManager.Users;
+
+                var targetList = users.Select(x => new UserModel() { Name = x.UserName, Email = x.Email }).ToList();
+
+                return Ok(targetList);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+
+
+        }
+
     }
 }

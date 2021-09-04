@@ -73,5 +73,12 @@ namespace BethanysPieShopHRM.Server.Services
             ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
+
+        public async Task<IEnumerable<UserModel>> GetAllUsers()
+        {
+            return await JsonSerializer.DeserializeAsync<IEnumerable<UserModel>>
+                (await _httpClient.GetStreamAsync($"api/accounts/GetAllUsers"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+        }
     }
 }

@@ -18,11 +18,12 @@ namespace BethanysPieShopHRM.Api.Controllers
         //private static UserModel LoggedOutUser = new UserModel { IsAuthenticated = false };
 
         private readonly UserManager<IdentityUser> _userManager;
-       
-        public AccountsController(UserManager<IdentityUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountsController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-          
+            _roleManager = roleManager;
+
         }
 
         [HttpPost]
@@ -55,11 +56,67 @@ namespace BethanysPieShopHRM.Api.Controllers
                 var model = new List<UserModel>();
                 var users = _userManager.Users;
 
-                var targetList = users.Select(x => new UserModel() { Name = x.UserName, Email = x.Email }).ToList();
+                var targetList = users.Select(x => new UserModel() { Id = x.Id, Name = x.UserName, Email = x.Email }).ToList();
 
                 return Ok(targetList);
             }
             catch(Exception ex)
+            {
+                return null;
+            }
+
+
+        }
+
+        [HttpGet]
+        [Route("GetUserRolesById/{userId}")]
+        public async Task<IActionResult> GetUserRolesById(string userId)
+        {
+            try
+            {             
+                var user = await _userManager.FindByIdAsync(userId);
+                
+               if(user == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    var rolesSelection = new List<RolesSelection>();
+
+                    var userRoleVM = new UserRoleVM();
+
+                    userRoleVM.UserId = user.Id;
+                    userRoleVM.UserName = user.UserName;
+                    userRoleVM.UserEmail = user.Email;
+
+
+                    foreach (var role in _roleManager.Roles)
+                    {
+                        var userRolesViewModel = new RolesSelection
+                        {
+                            RoleId = role.Id,
+                            RoleName = role.Name
+                        };
+
+                        if (await _userManager.IsInRoleAsync(user, role.Name))
+                        {
+                            userRolesViewModel.IsSelected = true;
+                        }
+                        else
+                        {
+                            userRolesViewModel.IsSelected = false;
+                        }
+
+                        rolesSelection.Add(userRolesViewModel);
+                    }
+                    userRoleVM.RolesSelections = rolesSelection;
+
+                    return Ok(userRoleVM);
+                }            
+
+            }
+            catch (Exception ex)
             {
                 return null;
             }

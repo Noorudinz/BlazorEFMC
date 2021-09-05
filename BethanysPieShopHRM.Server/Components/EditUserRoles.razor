@@ -93,21 +93,21 @@
 
     protected async Task HandleValidSubmit()
     {
-        //var response = await AuthDataService.AddRoleOrEdit(role);
+        var response = await AuthDataService.UpdateUserRoles(userRoles);
 
-        //if (response.IsSuccess)
-        //{
-        //    ShowDialog = false;
+        if (response.Successful)
+        {
+            ShowDialog = false;
 
-        //    await CloseEventCallback.InvokeAsync(true);
-        //    StateHasChanged();
-        //}
-        //else
-        //{
-        //    StatusClass = "alert-danger";
-        //    ErrorMsg = string.Join(",", response.Errors.ToArray());
+            await CloseEventCallback.InvokeAsync(true);
+            StateHasChanged();
+        }
+        else
+        {
+            StatusClass = "alert-danger";
+            ErrorMsg = string.Join(",", response.Errors.ToArray());
 
-        //}6382985870
+        }
 
     }
 

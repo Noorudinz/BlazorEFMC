@@ -7,6 +7,10 @@ namespace BethanysPieShopHRM.Shared
 {
     public class RegisterModel
     {
+
+        [Key]
+        public string Id { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -32,6 +36,7 @@ namespace BethanysPieShopHRM.Shared
     {
         public bool Successful { get; set; }
         public IEnumerable<string> Errors { get; set; }
+        public string ErrorMsg { get; set; }
     }
 
     public class RolesVM

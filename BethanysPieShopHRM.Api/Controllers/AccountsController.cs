@@ -29,10 +29,20 @@ namespace BethanysPieShopHRM.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegisterModel model)
         {
-            var newUser = new IdentityUser { UserName = model.UserName, Email = model.Email };
+            var newUser = new IdentityUser {Id = model.Id, UserName = model.UserName, Email = model.Email };
+            var result = new IdentityResult();
 
-            var result = await _userManager.CreateAsync(newUser, model.Password);
-
+            if(model.Id != string.Empty && model.Id != null)
+            {
+                var user = await _userManager.FindByIdAsync(model.Id);
+                user.UserName = newUser.UserName;
+                user.Email = newUser.Email;
+                result = await _userManager.UpdateAsync(user);
+            }               
+            else            
+                result = await _userManager.CreateAsync(newUser, model.Password);
+            
+          
 
             if (!result.Succeeded)
             {
@@ -121,6 +131,43 @@ namespace BethanysPieShopHRM.Api.Controllers
                 return null;
             }
 
+
+        }
+
+        [HttpPost]
+        [Route("RegisterUserRoles")]
+        public async Task<IActionResult> RegisterUserRoles([FromBody] UserRoleVM model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                return Ok(new RegisterResult { Successful = true, ErrorMsg = "User not found" });
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+
+         
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
+
+                return Ok(new RegisterResult { Successful = false, Errors = errors });
+
+            }
+
+            result = await _userManager.AddToRolesAsync(user,
+    model.RolesSelections.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
+
+                return Ok(new RegisterResult { Successful = false, Errors = errors });
+            }
+
+            return Ok(new RegisterResult { Successful = true });
 
         }
 

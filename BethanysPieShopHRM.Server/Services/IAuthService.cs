@@ -14,6 +14,7 @@ namespace BethanysPieShopHRM.Server.Services
         Task<RegisterResult> Register(RegisterModel registerModel);
         Task<IEnumerable<UserModel>> GetAllUsers();
         Task<UserRoleVM> GetUsersById(string Id);
-
+        Task<RegisterResult> UpdateUserRoles(UserRoleVM userRolesModel);
+        //Task<RegisterResult> UpdateUsers(UserRoleVM userRolesModel);
     }
 }

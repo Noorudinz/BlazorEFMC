@@ -1,0 +1,83 @@
+﻿@page "/users"
+@attribute [Authorize]
+@using BethanysPieShopHRM.Server.Services;
+@using BethanysPieShopHRM.Shared;
+@using Syncfusion.Blazor.Notifications;
+
+<SfToast ID="toast_default" @ref="ToastObj" Title="Info" Content="@ToastContent">
+    <ToastPosition X="Center"></ToastPosition>
+</SfToast>
+
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@GridData" AllowPaging="true">
+                <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                </GridPageSettings>
+                <GridEditSettings AllowDeleting="true" AllowEditing="true"></GridEditSettings>
+                <GridEvents OnActionBegin="ActionBeginHandler" TValue="UserModel"></GridEvents>
+                <GridColumns>
+                    <GridColumn Field=@nameof(UserModel.Id) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
+                    <GridColumn Field=@nameof(UserModel.Name) HeaderText="Name" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(UserModel.Email) HeaderText="Email" Width="140"></GridColumn>
+                    <GridColumn HeaderText="Manage Records" Width="150">
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-save", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    SfToast ToastObj;
+    private string ToastContent = string.Empty;
+
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    [Inject]
+    public IAuthService AuthDataService { get; set; }
+
+    public List<UserModel> GridData { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await AuthDataService.GetAllUsers()).ToList();
+
+    }
+
+    public async void ActionBeginHandler(ActionEventArgs<UserModel> Args)
+    {
+        if (Args.Data != null)
+        {
+            if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+            {
+                if (Args.Action == "Edit")
+                {
+                    var registerModel = new RegisterModel();
+                    registerModel.Id = Args.Data.Id;
+                    registerModel.UserName = Args.Data.Name;
+                    registerModel.Email = Args.Data.Email;
+                    registerModel.Password = "Unknown";
+                    registerModel.ConfirmPassword = "Unknown";
+                    var result = await AuthDataService.Register(registerModel);
+                    if (result.Successful)
+                        ToastContent = "Updated Successfully!";
+                    else
+                        ToastContent = "Something went wrong!";
+                }
+            }
+        }
+
+
+    }
+
+}

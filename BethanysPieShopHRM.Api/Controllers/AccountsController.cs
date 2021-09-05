@@ -29,10 +29,20 @@ namespace BethanysPieShopHRM.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegisterModel model)
         {
-            var newUser = new IdentityUser { UserName = model.UserName, Email = model.Email };
+            var newUser = new IdentityUser {Id = model.Id, UserName = model.UserName, Email = model.Email };
+            var result = new IdentityResult();
 
-            var result = await _userManager.CreateAsync(newUser, model.Password);
-
+            if(model.Id != string.Empty && model.Id != null)
+            {
+                var user = await _userManager.FindByIdAsync(model.Id);
+                user.UserName = newUser.UserName;
+                user.Email = newUser.Email;
+                result = await _userManager.UpdateAsync(user);
+            }               
+            else            
+                result = await _userManager.CreateAsync(newUser, model.Password);
+            
+          
 
             if (!result.Succeeded)
             {

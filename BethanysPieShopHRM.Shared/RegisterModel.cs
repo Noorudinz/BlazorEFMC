@@ -7,6 +7,10 @@ namespace BethanysPieShopHRM.Shared
 {
     public class RegisterModel
     {
+
+        [Key]
+        public string Id { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

@@ -124,5 +124,42 @@ namespace BethanysPieShopHRM.Api.Controllers
 
         }
 
+        [HttpPost]
+        [Route("RegisterUserRoles")]
+        public async Task<IActionResult> RegisterUserRoles([FromBody] UserRoleVM model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                return Ok(new RegisterResult { Successful = true, ErrorMsg = "User not found" });
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+
+         
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
+
+                return Ok(new RegisterResult { Successful = false, Errors = errors });
+
+            }
+
+            result = await _userManager.AddToRolesAsync(user,
+    model.RolesSelections.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
+
+                return Ok(new RegisterResult { Successful = false, Errors = errors });
+            }
+
+            return Ok(new RegisterResult { Successful = true });
+
+        }
+
     }
 }

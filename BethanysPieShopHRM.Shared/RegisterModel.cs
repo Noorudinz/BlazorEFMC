@@ -32,6 +32,7 @@ namespace BethanysPieShopHRM.Shared
     {
         public bool Successful { get; set; }
         public IEnumerable<string> Errors { get; set; }
+        public string ErrorMsg { get; set; }
     }
 
     public class RolesVM

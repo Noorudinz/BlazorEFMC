@@ -89,5 +89,22 @@ namespace BethanysPieShopHRM.Server.Services
             //return data.FirstOrDefault(a => a.Id == Id);
 
         }
+
+        public async Task<RegisterResult> UpdateUserRoles(UserRoleVM userRolesModel)
+        {
+            var userRolesAsJson = JsonSerializer.Serialize(userRolesModel);
+
+            var response = await _httpClient.PostAsync("api/accounts/RegisterUserRoles", new StringContent(userRolesAsJson, Encoding.UTF8, "application/json"));
+
+            var registerResult = JsonSerializer.Deserialize<RegisterResult>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (!registerResult.Successful)
+            {
+                return registerResult;
+
+            }
+
+            return registerResult;
+        }
     }
 }

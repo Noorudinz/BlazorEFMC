@@ -13,6 +13,7 @@ namespace BethanysPieShopHRM.Server.Services
         Task Logout();
         Task<RegisterResult> Register(RegisterModel registerModel);
         Task<IEnumerable<UserModel>> GetAllUsers();
+        Task<UserRoleVM> GetUsersById(string Id);
 
     }
 }

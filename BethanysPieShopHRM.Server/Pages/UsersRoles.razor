@@ -1,32 +1,119 @@
 ﻿@page "/usersroles"
 @attribute [Authorize]
 @using Syncfusion.Blazor.Grids
-@*@using BethanysPieShopHRM.Shared;*@
+@using Syncfusion.Blazor.DropDowns
+@using BethanysPieShopHRM.Server.Services;
+@using BethanysPieShopHRM.Shared;
 
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid DataSource="@GridData" Toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Update", "Cancel" })" AllowPaging="true">
-        <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
-        <!--<GridColumns>-->
-            @*<GridColumn Field=@nameof(UserModel.Id) HeaderText="Id" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="140"></GridColumn>*@
-            <!--<GridColumn Field=@nameof(UserModelList.Name) HeaderText="Name" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(UserModelList.Email) HeaderText="Email" Width="140"></GridColumn>
-            <GridColumn Field=@nameof(UserModelList.IsAuthenticated) HeaderText="IsAuthenticated" DisplayAsCheckBox="true" Width="150" TextAlign="TextAlign.Center"></GridColumn>
-        </GridColumns>-->
-    </SfGrid>
-            @*<SfGrid DataSource="@Orders" AllowPaging="true">
-                <GridPageSettings PageSize="5"></GridPageSettings>
-                <GridColumns>
-                    <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-                    <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" Width="150"></GridColumn>
-                    <GridColumn Field=@nameof(Order.OrderDate) HeaderText=" Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-                    <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-                </GridColumns>
-            </SfGrid>*@
+
+            @if (GridData == null)
+            {
+        <p><em>Loading...</em></p> 
+        }
+                    else
+                    {
+        <table class="table">
+            <thead>
+                <tr>                    
+                    <th>Name</th>
+                    <th>Email</th>                   
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in GridData)
+                {
+        <tr>       
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            
+            <td>
+                <button @onclick="() => EditUserRoles(user.Id)" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+            </td>
+        </tr>}
+            </tbody>
+        </table>}
+
+
+            @*<SfGrid DataSource="@GridData" AllowPaging="true">
+            <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+            </GridPageSettings>
+            <GridEditSettings AllowDeleting="true" AllowEditing="true"></GridEditSettings>
+            <GridEvents OnActionBegin="ActionBeginHandler" TValue="UserModel"></GridEvents>
+            <GridColumns>
+                <GridColumn Field=@nameof(UserModel.Id) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
+                <GridColumn Field=@nameof(UserModel.Name) HeaderText="Name" Width="150"></GridColumn>
+                <GridColumn Field=@nameof(UserModel.Email) HeaderText="Email" Width="140"></GridColumn>
+                <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-save", CssClass="e-flat" })"></GridCommandColumn>
+                        <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>*@
         </div>
     </div>
 </div>
 
+<EditUserRoles @ref="EditUserRolesDialog" CloseEventCallback="@EditUserRolesDialog_OnDialogClose"></EditUserRoles>
+
+
+@code{
+
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    [Inject]
+    public IAuthService AuthDataService { get; set; }
+
+    [Inject]
+    public IRolesDataService RolesDataService { get; set; }
+
+    public List<UserModel> GridData { get; set; }
+
+    public List<RolesVM> Roles { get; set; }
+
+    protected EditUserRoles EditUserRolesDialog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await AuthDataService.GetAllUsers()).ToList();
+        //Roles = (await RolesDataService.GetAllRoles()).ToList();
+    }
+
+    //public async void ActionBeginHandler(ActionEventArgs<UserModel> Args)
+    //{
+    //    if(Args.Data != null)
+    //    {
+    //        EditUserRolesDialog.ShowEdit(Args.Data.Id);
+    //    }
+
+    //    //if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+    //    //{
+    //    //    if (Args.Action == "Edit")
+    //    //    {
+
+    //    //    }
+    //    //}
+
+    //}
+
+    public void EditUserRoles(string Id)
+    {
+        EditUserRolesDialog.ShowEdit(Id);
+    }
+
+    public async void EditUserRolesDialog_OnDialogClose()
+    {
+        GridData = (await AuthDataService.GetAllUsers()).ToList();
+        StateHasChanged();
+    }
+
+}
 

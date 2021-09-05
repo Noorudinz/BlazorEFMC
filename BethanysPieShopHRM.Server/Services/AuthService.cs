@@ -80,5 +80,14 @@ namespace BethanysPieShopHRM.Server.Services
                 (await _httpClient.GetStreamAsync($"api/accounts/GetAllUsers"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
         }
+
+        public async Task<UserRoleVM> GetUsersById(string userId)
+        {
+            return await JsonSerializer.DeserializeAsync<UserRoleVM>
+                (await _httpClient.GetStreamAsync($"api/accounts/GetUserRolesById/{userId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+            //return data.FirstOrDefault(a => a.Id == Id);
+
+        }
     }
 }

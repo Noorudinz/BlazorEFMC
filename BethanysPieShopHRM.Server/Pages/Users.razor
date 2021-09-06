@@ -4,10 +4,13 @@
 @using BethanysPieShopHRM.Shared;
 @using Syncfusion.Blazor.Notifications;
 
-<SfToast ID="toast_default" @ref="ToastObj" Title="Info" Content="@ToastContent">
+<SfToast @ref="WarningToastObj" Title="Warning !" Content="@WarningContent" Timeout="3000">
     <ToastPosition X="Center"></ToastPosition>
 </SfToast>
 
+<SfToast @ref="SuccessToastObj" Title="Success !" Content="@SuccessContent" Timeout="3000">
+    <ToastPosition X="Center"></ToastPosition>
+</SfToast>
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -38,8 +41,12 @@
 
 @code {
 
-    SfToast ToastObj;
-    private string ToastContent = string.Empty;
+    SfToast WarningToastObj;
+    SfToast SuccessToastObj;
+
+    private string SuccessContent { get; set; } = "Updated Successfully !";
+    private string WarningContent { get; set; } = "Something went wrong !";
+
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
@@ -70,9 +77,15 @@
                     registerModel.ConfirmPassword = "Unknown";
                     var result = await AuthDataService.Register(registerModel);
                     if (result.Successful)
-                        ToastContent = "Updated Successfully!";
+                        await this.SuccessToastObj.ShowAsync();
                     else
-                        ToastContent = "Something went wrong!";
+                        await this.WarningToastObj.ShowAsync();
+
+                }
+
+                if(Args.Action == "Delete")
+                {
+
                 }
             }
         }

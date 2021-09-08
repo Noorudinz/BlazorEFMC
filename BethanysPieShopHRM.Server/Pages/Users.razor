@@ -44,7 +44,7 @@
     SfToast WarningToastObj;
     SfToast SuccessToastObj;
 
-    private string SuccessContent { get; set; } = "Updated Successfully !";
+    private string SuccessContent { get; set; } = "Proccessed Successfully !";
     private string WarningContent { get; set; } = "Something went wrong !";
 
 
@@ -82,12 +82,24 @@
                         await this.WarningToastObj.ShowAsync();
 
                 }
-
-                if(Args.Action == "Delete")
-                {
-
-                }
             }
+
+            if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+            {
+                var registerModel = new RegisterModel();
+                registerModel.Id = Args.Data.Id;
+                registerModel.UserName = Args.Data.Name;
+                registerModel.Email = Args.Data.Email;
+                registerModel.Password = "Unknown";
+                registerModel.ConfirmPassword = "Unknown";
+                var result = await AuthDataService.DeleteUser(registerModel);
+                if (result.Successful)
+                    await this.SuccessToastObj.ShowAsync();
+                else
+                    await this.WarningToastObj.ShowAsync();
+            }
+
+
         }
 
 

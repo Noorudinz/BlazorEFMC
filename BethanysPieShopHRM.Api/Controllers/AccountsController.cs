@@ -171,5 +171,28 @@ namespace BethanysPieShopHRM.Api.Controllers
 
         }
 
+        [HttpPost]
+        [Route("DeleteUser")]
+        public async Task<IActionResult> DeleteUser([FromBody] RegisterModel model)
+        {
+            var user = new IdentityUser { Id = model.Id, UserName = model.UserName, Email = model.Email };             
+            var result = new IdentityResult();
+
+            var findUser = await _userManager.FindByIdAsync(user.Id);
+
+            result = await _userManager.DeleteAsync(findUser);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
+
+                return Ok(new RegisterResult { Successful = false, Errors = errors });
+
+            }
+
+            return Ok(new RegisterResult { Successful = true });
+
+        }
+
     }
 }

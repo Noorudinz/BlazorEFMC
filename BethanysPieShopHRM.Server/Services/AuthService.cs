@@ -106,5 +106,23 @@ namespace BethanysPieShopHRM.Server.Services
 
             return registerResult;
         }
+
+        public async Task<RegisterResult> DeleteUser(RegisterModel registerModel)
+        {
+            var registerAsJson = JsonSerializer.Serialize(registerModel);
+
+            var response = await _httpClient.PostAsync("api/accounts/DeleteUser", new StringContent(registerAsJson, Encoding.UTF8, "application/json"));
+
+            var registerResult = JsonSerializer.Deserialize<RegisterResult>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (!registerResult.Successful)
+            {
+                return registerResult;
+
+            }
+
+            return registerResult;
+
+        }
     }
 }

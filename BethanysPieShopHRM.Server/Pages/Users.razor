@@ -3,6 +3,8 @@
 @using BethanysPieShopHRM.Server.Services;
 @using BethanysPieShopHRM.Shared;
 @using Syncfusion.Blazor.Notifications;
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
 
 <SfToast @ref="WarningToastObj" Title="Warning !" Content="@WarningContent" Timeout="3000">
     <ToastPosition X="Center"></ToastPosition>
@@ -11,6 +13,22 @@
 <SfToast @ref="SuccessToastObj" Title="Success !" Content="@SuccessContent" Timeout="3000">
     <ToastPosition X="Center"></ToastPosition>
 </SfToast>
+
+<SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+    <DialogTemplates>
+        <Header> Message </Header>
+        <Content>
+            <input type="hidden" value="@UserId" />
+            <p class="font-weight-bold">Are you sure want to delete ?</p>
+            <br />
+            <span class="card-text">@UserName</span>            
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="OK" IsPrimary="true" OnClick="@DeleteConfirm" />
+        <DialogButton Content="Cancel" OnClick="@CloseDialog" />
+    </DialogButtons>
+</SfDialog>
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -46,9 +64,14 @@
 
     private string SuccessContent { get; set; } = "Proccessed Successfully !";
     private string WarningContent { get; set; } = "Something went wrong !";
-
+    private string UserName { get; set; }
+    private string UserId { get; set; }
+    private string Email { get; set; }
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    private bool IsVisible { get; set; } = false;
+
 
     [Inject]
     public IAuthService AuthDataService { get; set; }
@@ -59,6 +82,33 @@
     {
         GridData = (await AuthDataService.GetAllUsers()).ToList();
 
+    }
+
+
+
+
+    private void CloseDialog()
+    {
+        this.IsVisible = false;
+    }
+
+    private async void DeleteConfirm()
+    {
+        var registerModel = new RegisterModel();
+        registerModel.Id = UserId;
+        registerModel.UserName = UserName;
+        registerModel.Email = Email;
+        registerModel.Password = "Unknown";
+        registerModel.ConfirmPassword = "Unknown";
+        var result = await AuthDataService.DeleteUser(registerModel);
+        if (result.Successful)
+            await this.SuccessToastObj.ShowAsync();
+        else
+            await this.WarningToastObj.ShowAsync();
+        this.IsVisible = false;
+
+        GridData = (await AuthDataService.GetAllUsers()).ToList();
+        StateHasChanged();
     }
 
     public async void ActionBeginHandler(ActionEventArgs<UserModel> Args)
@@ -86,17 +136,10 @@
 
             if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
             {
-                var registerModel = new RegisterModel();
-                registerModel.Id = Args.Data.Id;
-                registerModel.UserName = Args.Data.Name;
-                registerModel.Email = Args.Data.Email;
-                registerModel.Password = "Unknown";
-                registerModel.ConfirmPassword = "Unknown";
-                var result = await AuthDataService.DeleteUser(registerModel);
-                if (result.Successful)
-                    await this.SuccessToastObj.ShowAsync();
-                else
-                    await this.WarningToastObj.ShowAsync();
+                IsVisible = true;
+                UserId = Args.Data.Id;
+                UserName = Args.Data.Name;
+                Email = Args.Data.Email;
             }
 
 

@@ -26,13 +26,7 @@ namespace BethanysPieShopHRM.Server
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            //var claims = new List<Claim>
-            //    {
-            //        new Claim(ClaimTypes.Name, "John Doe"),
-            //        new Claim(ClaimTypes.Role, "Administrator")
-            //    };
-            //var anonymous = new ClaimsIdentity(claims, "testAuthType");
-            //return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
+           
 
             var savedToken = await _localStorage.GetItemAsync<string>("authToken");
 
@@ -40,27 +34,25 @@ namespace BethanysPieShopHRM.Server
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-            //else
-            //{
-            //    var email = GetName(savedToken);
-            //    var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
-            //    var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-            //    NotifyAuthenticationStateChanged(authState);
-            //}
+         
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
 
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
 
-            //return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
-            var email = GetName(savedToken);
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth")));
+            //var email = GetName(savedToken);
+            //return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth")));
 
 
         }
 
         public void MarkUserAsAuthenticated(string email)
         {
-            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
+            //var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
+            //var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+            //NotifyAuthenticationStateChanged(authState);
+
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(email), "jwt"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }

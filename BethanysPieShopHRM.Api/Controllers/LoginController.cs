@@ -38,21 +38,47 @@ namespace BethanysPieShopHRM.Api.Controllers
                 if (!result.Succeeded)
                     return BadRequest(new LoginResult { Successful = false, Error = "Username and password are invalid." });
 
-                var tokenDescriptor = new SecurityTokenDescriptor
+                var user = await _signInManager.UserManager.FindByNameAsync(login.Email);
+                var roles = await _signInManager.UserManager.GetRolesAsync(user);
+                var claims = new List<Claim>();
+
+                claims.Add(new Claim(ClaimTypes.Name, login.Email));
+
+                foreach (var role in roles)
                 {
-                    Subject = new ClaimsIdentity(new[]
-                        {
-                            new Claim(ClaimTypes.Name, login.Email)
-                    }),
-                    Expires = DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtExpiryInDays"])),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"])), SecurityAlgorithms.HmacSha256Signature)
-                };
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var expiry = DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtExpiryInDays"]));
 
-                return Ok(new LoginResult { Successful = true, Token = token });
+                var token = new JwtSecurityToken(
+                    _configuration["JwtIssuer"],
+                    _configuration["JwtAudience"],
+                    claims,
+                    expires: expiry,
+                    signingCredentials: creds
+                );
+
+                return Ok(new LoginResult { Successful = true, Token = new JwtSecurityTokenHandler().WriteToken(token) });
+
+                //var tokenDescriptor = new SecurityTokenDescriptor
+                //{
+                //    Subject = new ClaimsIdentity(new[]
+                //        {
+                //            new Claim(ClaimTypes.Name, login.Email)                          
+                //    }),
+
+                //    Expires = DateTime.Now.AddDays(Convert.ToInt32(_configuration["JwtExpiryInDays"])),
+                //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"])), SecurityAlgorithms.HmacSha256Signature)
+                //};
+
+                //var tokenHandler = new JwtSecurityTokenHandler();
+                //var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                //var token = tokenHandler.WriteToken(securityToken);
+
+                //return Ok(new LoginResult { Successful = true, Token = token });
 
             }
             catch(Exception ex)

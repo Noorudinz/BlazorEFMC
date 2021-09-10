@@ -76,12 +76,15 @@
     [Inject]
     public IAuthService AuthDataService { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState> stateTask { get; set; }
+ 
     public List<UserModel> GridData { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         GridData = (await AuthDataService.GetAllUsers()).ToList();
-
+        var data = stateTask.Result.User;
     }
 
 

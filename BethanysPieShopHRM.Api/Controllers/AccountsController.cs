@@ -36,7 +36,7 @@ namespace BethanysPieShopHRM.Api.Controllers
             {
                 var user = await _userManager.FindByIdAsync(model.Id);
                 user.UserName = newUser.UserName;
-                user.Email = newUser.Email;
+                user.Email = newUser.Email;               
                 result = await _userManager.UpdateAsync(user);
             }               
             else            

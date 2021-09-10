@@ -1,5 +1,5 @@
 ﻿@page "/roles"
-
+@attribute [Authorize]
 
 <h1 class="page-title">All roles</h1>
 
@@ -20,17 +20,17 @@ else
             {
                 @if (role.Name != "admin")
                 {
-            <tr>
+                    <tr>
 
-                <td>@role.NormalizedName</td>
-                <td>
-                    <button @onclick="() => AddEditRoles(role.Id)" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+                        <td>@role.NormalizedName</td>
+                        <td>
+                            <button @onclick="() => AddEditRoles(role.Id)" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
 
-                </td>
-                <td>
-                    <button @onclick="() => DeleteRoles(role.Id)" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
-                </td>
-            </tr>
+                        </td>
+                        <td>
+                            <button @onclick="() => DeleteRoles(role.Id)" class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
                 }
 
             }

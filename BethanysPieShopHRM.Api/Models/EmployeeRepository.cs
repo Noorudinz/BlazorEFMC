@@ -67,6 +67,7 @@ namespace BethanysPieShopHRM.Api.Models
             if (foundEmployee == null) return;
 
             _appDbContext.Employees.Remove(foundEmployee);
+            
             _appDbContext.SaveChanges();
         }
     }

@@ -32,7 +32,7 @@ namespace BethanysPieShopHRM.Server
             services.AddBlazoredLocalStorage();
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();     
             services.AddSyncfusionBlazor();
 
             //services.AddScoped<HttpClient>(s =>

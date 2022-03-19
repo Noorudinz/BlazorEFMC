@@ -40,14 +40,18 @@ namespace BethanysPieShopHRM.Api.Implementation
                                         .OrderByDescending(e => e.Amount)
                                         .Take(5).ToList();
 
+            var listTop5 = new List<TopFiveOP>();
+
             foreach(var five in topFiveOP)
             {
                 TopFiveOP tp5 = new TopFiveOP();
                 tp5.Amount = Convert.ToDecimal(five.Amount);
                 tp5.FlatNo = five.FlatNo;
                 tp5.Name = five.Name;
-                dashBoradDetail.TopFiveOP.Add(tp5);
+                listTop5.Add(tp5);
             }
+
+            dashBoradDetail.TopFiveOP = listTop5;
 
             var amountDue = _appDbContext.TotalAmountDue
                                     .FromSqlRaw("select sum(Amount) as Amount from AccountSummary a, FlatOwner f where a.AccontNo in (SELECT MAX(AccontNo)" +

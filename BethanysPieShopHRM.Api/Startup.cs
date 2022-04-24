@@ -40,6 +40,7 @@ namespace BethanysPieShopHRM.Api
             services.AddIdentity<IdentityUser, IdentityRole>()
            .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blazor backend", Version = "v1" });

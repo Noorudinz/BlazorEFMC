@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BethanysPieShopHRM.Api.Controllers
@@ -194,5 +195,75 @@ namespace BethanysPieShopHRM.Api.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetEmail/{email}")]
+        public async Task<IActionResult> GetEmail(string email)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(email);
+
+                if (match.Success)
+                {
+                    var getUserByEmail = await _userManager.FindByEmailAsync(email);
+
+                    if (getUserByEmail != null)
+                    {
+                        return Ok(new SendEmailResponse()
+                        {
+                            Message = "Email sent successfully !",
+                            IsSend = true
+                        });
+                    }
+                    else
+                    {
+                        return Ok(new SendEmailResponse()
+                        {
+                            Message = "Email not found !",
+                            IsSend = false
+                        });
+                    }
+
+                }
+            }
+
+            return Ok(new SendEmailResponse()
+            {
+                Message = "Invalid request!",
+                IsSend = false
+            });
+
+        }
+
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest request)
+        {
+            if (request != null)
+            {
+                var user = await _userManager.FindByEmailAsync(request.Email);
+
+                if (user != null)
+                {
+                    var response = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.ConfirmPassword);
+
+                    if (response.Succeeded)
+                    {
+                        return Ok(new ChangePasswordResponse()
+                        {
+                            Message = "Password changed successfully !",
+                            IsChanges = true
+                        });
+                    }
+                }
+            }
+            return Ok(new ChangePasswordResponse()
+            {
+                Message = "Invalid request !",
+                IsChanges = false
+            });
+
+        }
     }
 }

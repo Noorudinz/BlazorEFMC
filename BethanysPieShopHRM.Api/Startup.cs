@@ -1,5 +1,7 @@
 using BethanysPieShopHRM.Api.Data;
+using BethanysPieShopHRM.Api.Implementation;
 using BethanysPieShopHRM.Api.Models;
+using BethanysPieShopHRM.Api.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace BethanysPieShopHRM.Api
@@ -36,10 +39,12 @@ namespace BethanysPieShopHRM.Api
 
             services.AddIdentity<IdentityUser, IdentityRole>()
            .AddEntityFrameworkStores<ApplicationDbContext>();
-                       
 
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //.AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blazor backend", Version = "v1" });
+            });
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        .AddJwtBearer(options =>
@@ -56,18 +61,14 @@ namespace BethanysPieShopHRM.Api
            };
        });
 
-            //services.AddIdentity<IdentityUser, ApplicationRole>();
 
+            services.AddScoped<IBuilding, BuildingRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICompanyReposistory, CompanyReposistory>();
-         
-            //services.AddTransient<IUserStore<IdentityUser>, UserStore<IdentityUser>>();
-            //services.AddDbContext<ApplicationDbContext>();
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddScoped<IDashboard, DashboardRepo>();
+
 
             services.AddCors(options =>
             {
@@ -75,7 +76,6 @@ namespace BethanysPieShopHRM.Api
             });
 
             services.AddControllers();
-                //.AddJsonOptions(options => options.JsonSerializerOptions.ca);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,6 +84,8 @@ namespace BethanysPieShopHRM.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API v1"));
             }
 
             app.UseHttpsRedirection();

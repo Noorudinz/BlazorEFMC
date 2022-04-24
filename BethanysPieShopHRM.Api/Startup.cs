@@ -40,13 +40,12 @@ namespace BethanysPieShopHRM.Api
             services.AddIdentity<IdentityUser, IdentityRole>()
            .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blazor backend", Version = "v1" });
             });
 
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //.AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        .AddJwtBearer(options =>
@@ -63,19 +62,14 @@ namespace BethanysPieShopHRM.Api
            };
        });
 
-            //services.AddIdentity<IdentityUser, ApplicationRole>();
 
+            services.AddScoped<IBuilding, BuildingRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICompanyReposistory, CompanyReposistory>();
             services.AddScoped<IDashboard, DashboardRepo>();
 
-            //services.AddTransient<IUserStore<IdentityUser>, UserStore<IdentityUser>>();
-            //services.AddDbContext<ApplicationDbContext>();
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
 
             services.AddCors(options =>
             {
@@ -83,7 +77,6 @@ namespace BethanysPieShopHRM.Api
             });
 
             services.AddControllers();
-                //.AddJsonOptions(options => options.JsonSerializerOptions.ca);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

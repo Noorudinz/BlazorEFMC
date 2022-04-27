@@ -13,7 +13,7 @@ namespace BethanysPieShopHRM.Api.Implementation
 {
     public class ImportsRepository: IImports
     {
-        public readonly AppDbContext _context;
+        private readonly AppDbContext _context;
 
         public ImportsRepository(AppDbContext context)
         {

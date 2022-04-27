@@ -44,13 +44,13 @@ namespace BethanysPieShopHRM.Api.Controllers
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("UploadBTU")]
-        public async Task<IActionResult> UploadBTU() //for API test use IFormFile File param
+        public async Task<IActionResult> UploadBTU() //for API test use (IFormFile File) param
         {          
-            //var file = Request.Form.Files[0];
+            var file = Request.Form.Files[0];
             var folderName = Path.Combine("Resources", "Imports/BTU");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-            return Ok(_importsRepo.UploadBTU(File, pathToSave, folderName));         
+            return Ok(_importsRepo.UploadBTU(file, pathToSave, folderName));         
         }
 
         [HttpPost, DisableRequestSizeLimit]

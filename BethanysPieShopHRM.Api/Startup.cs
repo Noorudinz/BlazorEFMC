@@ -62,6 +62,8 @@ namespace BethanysPieShopHRM.Api
            };
        });
 
+            services.AddScoped<IImports, ImportsRepository>();
+            services.AddScoped<IFlatOwner, FlatOwnerRepository>();
             services.AddScoped<IEmail, EmailRepository>();
             services.AddScoped<IBuilding, BuildingRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();

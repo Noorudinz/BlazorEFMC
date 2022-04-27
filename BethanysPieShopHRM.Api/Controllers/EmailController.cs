@@ -1,5 +1,6 @@
 ﻿using BethanysPieShopHRM.Api.Models;
 using BethanysPieShopHRM.Api.Repository;
+using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

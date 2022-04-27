@@ -98,6 +98,12 @@ namespace BethanysPieShopHRM.Api.Implementation
             return (sortedRecords);
         }
 
+        public PriceFactor GetPriceFactor()
+        {
+            var priceFactor = _context.PriceFactor.Where(id => id.PriceID == 1).FirstOrDefault();
+            return (priceFactor);
+        }
+
         public List<Receipt> GetReceiptByReceiptNo(string flatNo)
         {
             var records = _context.Receipt.Where(f => f.FlatNo == flatNo)
@@ -122,6 +128,34 @@ namespace BethanysPieShopHRM.Api.Implementation
                .ToList();
 
             return (records);
+        }
+
+        public CommonResponse UpdatePriceFactor(PriceFactor priceFactor)
+        {
+            if (priceFactor != null)
+            {
+                var foundData = _context.PriceFactor.FirstOrDefault(a => a.PriceID == 1);
+                foundData.BTUFactor = priceFactor.BTUFactor;
+                foundData.ElectricityFactor = priceFactor.ElectricityFactor;
+                foundData.WaterFactor = priceFactor.WaterFactor;
+                foundData.ServiceCharge = priceFactor.ServiceCharge;
+                foundData.OtherCharges = priceFactor.OtherCharges;
+                foundData.updated_date = DateTime.Now;
+
+                _context.SaveChanges();
+
+                return (new CommonResponse()
+                {
+                    Message = "Price Factor Updated Successfully !",
+                    IsUpdated = true
+                });
+            }
+
+            return (new CommonResponse()
+            {
+                Message = "Invalid request!",
+                IsUpdated = false
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BethanysPieShopHRM.Api.Repository;
+using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -45,6 +46,20 @@ namespace BethanysPieShopHRM.Api.Controllers
         public async Task<IActionResult> GetSummaryByFlatNo(string flatNo)
         {
             return Ok(_paymentRepo.GetSummaryByFlatNo(flatNo));
+        }
+
+        [HttpGet]
+        [Route("GetPriceFactor")]
+        public async Task<IActionResult> GetPriceFactor()
+        {
+            return Ok(_paymentRepo.GetPriceFactor());
+        }
+
+        [HttpPost]
+        [Route("UpdatePriceFactor")]
+        public async Task<IActionResult> UpdatePriceFactor(PriceFactor priceFactor)
+        {
+            return Ok(_paymentRepo.UpdatePriceFactor(priceFactor));
         }
     }
 }

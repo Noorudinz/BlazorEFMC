@@ -14,6 +14,8 @@ namespace BethanysPieShopHRM.Api.Repository
         List<AccountSummary> GetLastSummaryDetail();
         List<AccountSummary> GetSummaryByFlatNo(string flatNo);
         CommonResponse AddReceipt(Receipt receipt);
+        PriceFactor GetPriceFactor();
+        CommonResponse UpdatePriceFactor(PriceFactor priceFactor);
 
     }
 }

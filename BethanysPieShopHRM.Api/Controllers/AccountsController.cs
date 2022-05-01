@@ -3,10 +3,15 @@ using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -20,10 +25,12 @@ namespace BethanysPieShopHRM.Api.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AccountsController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly JwtConfig _jwtConfig;
+        public AccountsController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IOptionsMonitor<JwtConfig> optionsMonitor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _jwtConfig = optionsMonitor.CurrentValue;
 
         }
 
@@ -265,5 +272,6 @@ namespace BethanysPieShopHRM.Api.Controllers
             });
 
         }
+
     }
 }

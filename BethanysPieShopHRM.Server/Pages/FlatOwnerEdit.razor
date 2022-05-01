@@ -1,0 +1,112 @@
+﻿@page "/editFlatOwner"
+@page "/editFlatOwner/{FlatId}"
+@using BethanysPieShopHRM.Shared
+@inherits FlatOwnerEditBase
+
+<section class="employee-edit">
+    @if (!Saved)
+    {
+        <h1 class="page-title">Add FlatOwner</h1>
+        <EditForm Model="@FlatOwner" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="col">
+                    @*<input type="text" class="form-control" placeholder="Flat No">*@
+                    <InputText id="firstName" class="form-control" @bind-Value="@FlatOwner.FirstName" placeholder="First name"></InputText>
+                    <ValidationMessage For="@(() => FlatOwner.FirstName)" />
+                </div>
+                <div class="col">
+                    <InputSelect id="building" class="form-control" @bind-Value="@BuildingId">
+                        @foreach (var building in Buildings)
+                            {
+                            <option value="@building.BuildingId">@building.BuildingName</option>
+                            }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => FlatOwner.Building)" />
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col">
+                    <InputText id="floorNo" class="form-control" @bind-Value="@FlatOwner.FloorNo" placeholder="Floor No"></InputText>
+                    <ValidationMessage For="@(() => FlatOwner.FloorNo)" />
+                </div>
+                <div class="col">
+                    <InputDate id="possessionDate" class="form-control" @bind-Value="@FlatOwner.PossesionDate" placeholder="Possession Date"></InputDate>
+                    <ValidationMessage For="@(() => FlatOwner.PossesionDate)" />
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col">
+                    <InputText id="noOfBedRooms" class="form-control" @bind-Value="@FlatOwner.BedRooms" placeholder="No of Bed rooms"></InputText>
+                </div>
+                <div class="col">
+                    <InputText id="noOfCarParks" class="form-control" @bind-Value="@FlatOwner.CarParks" placeholder="No of Car parks"></InputText>
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col">
+                    <InputText id="telNumber" class="form-control" @bind-Value="@FlatOwner.TelNumber" placeholder="Tel number"></InputText>
+                </div>
+                <div class="col">
+                    <InputText id="carParkNos" class="form-control" @bind-Value="@FlatOwner.CarParkNos" placeholder="Car park nos"></InputText>
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col">
+                    <InputText id="familyName" class="form-control" @bind-Value="@FlatOwner.FamilyName" placeholder="Family name"></InputText>
+                    <ValidationMessage For="@(() => FlatOwner.FamilyName)" />
+                </div>
+                <div class="col">
+                    <InputText id="firstName" class="form-control" @bind-Value="@FlatOwner.FirstName" placeholder="First name"></InputText>
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col">
+                    <InputText id="mobileNumber" class="form-control" @bind-Value="@FlatOwner.MobileNumber" placeholder="Mobile number"></InputText>
+                    <ValidationMessage For="@(() => FlatOwner.MobileNumber)" />
+                </div>
+                <div class="col">
+                    <InputText id="carNo" class="form-control" @bind-Value="@FlatOwner.CarNo" placeholder="Car number"></InputText>
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col">
+                    <InputText id="email1" class="form-control" @bind-Value="@FlatOwner.Email1" placeholder="Email-1"></InputText>
+                    <ValidationMessage For="@(() => FlatOwner.Email1)" />
+                </div>
+                <div class="col">
+                    <InputText id="email2" class="form-control" @bind-Value="@FlatOwner.Email2" placeholder="Email-2"></InputText>
+                    <ValidationMessage For="@(() => FlatOwner.Email2)" />
+                </div>
+            </div>
+            <br />
+            <div class="form-row">
+                <div class="col-12">
+                    <InputText id="address" class="form-control" @bind-Value="@FlatOwner.Address" placeholder="Address"></InputText>
+                </div>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary edit-btn">Save FlatOwner</button>
+            <a class="btn btn-outline-primary edit-outline-btn" @onclick="@NavigateToOverview">Cancel</a>
+            @if (FlatOwner.FlatId > 0)
+            {
+              <a class="btn btn-danger" @onclick="@DeleteFlatOwner">
+             Delete
+        </a>}
+        </EditForm>
+    }
+    else
+    {
+         <div class="alert @StatusClass">@Message</div>
+         <a class="btn btn-outline-primary" @onclick="@NavigateToOverview">Back to overview</a>
+    }
+</section>
+
+
+   

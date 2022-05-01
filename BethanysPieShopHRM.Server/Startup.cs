@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Syncfusion.Blazor;
+using BethanysPieShopHRM.Server.Repository;
+using BethanysPieShopHRM.Server.Implementation;
 
 namespace BethanysPieShopHRM.Server
 {
@@ -44,6 +46,14 @@ namespace BethanysPieShopHRM.Server
             //});
 
             //services.AddScoped<IEmployeeDataService, MockEmployeeDataService>();
+            services.AddHttpClient<IBuilding, BuildingRepository>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44340/");
+            });
+            services.AddHttpClient<IFlatOwner, FlatOwnerRepository>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44340/");
+            });
             services.AddHttpClient<IEmployeeDataService, EmployeeDataService>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44340/");

@@ -8,29 +8,23 @@
 @using Syncfusion.Blazor.Popups
 @using Syncfusion.Blazor.Buttons
 
-<SfToast @ref="WarningToastObj" Title="Warning !" Content="@WarningContent" Timeout="3000">
-    <ToastPosition X="Center"></ToastPosition>
-</SfToast>
 
-<SfToast @ref="SuccessToastObj" Title="Success !" Content="@SuccessContent" Timeout="3000">
-    <ToastPosition X="Center"></ToastPosition>
-</SfToast>
-
-@*<SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+<SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
         <DialogTemplates>
             <Header> Message </Header>
             <Content>
-                <input type="hidden" value="@UserId" />
+                <input type="hidden" value="@FlatId" />
                 <p class="font-weight-bold">Are you sure want to delete ?</p>
                 <br />
-                <span class="card-text">@UserName</span>
+                <span class="card-text">FlatNo : @FlatNo</span><br />
+                <span class="card-text">Name : @Name</span>
             </Content>
         </DialogTemplates>
         <DialogButtons>
-            <DialogButton Content="OK" IsPrimary="true" OnClick="@DeleteConfirm" />
+            <DialogButton CssClass="btn btn-danger" Content="OK" IsPrimary="true" OnClick="@DeleteConfirm" />
             <DialogButton Content="Cancel" OnClick="@CloseDialog" />
         </DialogButtons>
-    </SfDialog>*@
+    </SfDialog>
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
@@ -39,7 +33,7 @@
                 <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
                 </GridPageSettings>
                 <GridEditSettings AllowDeleting="true" AllowEditing="true"></GridEditSettings>
-                <GridEvents TValue="BethanysPieShopHRM.Shared.FlatOwner"></GridEvents>
+                <GridEvents CommandClicked="OnCommandClicked" TValue="BethanysPieShopHRM.Shared.FlatOwner"></GridEvents>
                 <GridColumns>
                     <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.FlatOwner.FlatId) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
                     <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.FlatOwner.FlatNo) HeaderText="FlatNo" Width="150"></GridColumn>
@@ -47,10 +41,8 @@
                     <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.FlatOwner.MobileNumber) HeaderText="Mobile" Width="140"></GridColumn>
                     <GridColumn HeaderText="Manage Records" Width="150">
                         <GridCommandColumns>
-                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-save", CssClass="e-flat" })"></GridCommandColumn>
-                            <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-cancel-icon", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
                         </GridCommandColumns>
                     </GridColumn>
                 </GridColumns>
@@ -64,14 +56,10 @@
 
     @code {
 
-        SfToast WarningToastObj;
-        SfToast SuccessToastObj;
 
-        private string SuccessContent { get; set; } = "Proccessed Successfully !";
-        private string WarningContent { get; set; } = "Something went wrong !";
-        private string UserName { get; set; }
-        private string UserId { get; set; }
-        private string Email { get; set; }
+        private int FlatId { get; set; }
+        private string FlatNo { get; set; }
+        private string Name { get; set; }
 
         string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
@@ -88,7 +76,8 @@
             GridData = (await FlatOwnerService.GetAllFlatOwners()).ToList();
         }
 
-
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
 
         private void CloseDialog()
@@ -96,60 +85,34 @@
             this.IsVisible = false;
         }
 
-        //private async void DeleteConfirm()
-        //{
-        //    var registerModel = new RegisterModel();
-        //    registerModel.Id = UserId;
-        //    registerModel.UserName = UserName;
-        //    registerModel.Email = Email;
-        //    registerModel.Password = "Unknown";
-        //    registerModel.ConfirmPassword = "Unknown";
-        //    var result = await AuthDataService.DeleteUser(registerModel);
-        //    if (result.Successful)
-        //        await this.SuccessToastObj.ShowAsync();
-        //    else
-        //        await this.WarningToastObj.ShowAsync();
-        //    this.IsVisible = false;
+        private async void DeleteConfirm()
+        {
+            if(FlatNo != null)
+            {
+                await FlatOwnerService.DeleteFlatOwner(FlatNo);
+                this.IsVisible = false;
+            }
 
-        //    GridData = (await AuthDataService.GetAllUsers()).ToList();
-        //    StateHasChanged();
-        //}
+            StateHasChanged();
+        }
 
-        //public async void ActionBeginHandler(ActionEventArgs<UserModel> Args)
-        //{
-        //    if (Args.Data != null)
-        //    {
-        //        if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
-        //        {
-        //            if (Args.Action == "Edit")
-        //            {
-        //                var registerModel = new RegisterModel();
-        //                registerModel.Id = Args.Data.Id;
-        //                registerModel.UserName = Args.Data.Name;
-        //                registerModel.Email = Args.Data.Email;
-        //                registerModel.Password = "Unknown";
-        //                registerModel.ConfirmPassword = "Unknown";
-        //                var result = await AuthDataService.Register(registerModel);
-        //                if (result.Successful)
-        //                    await this.SuccessToastObj.ShowAsync();
-        //                else
-        //                    await this.WarningToastObj.ShowAsync();
+        public void OnCommandClicked(CommandClickEventArgs<BethanysPieShopHRM.Shared.FlatOwner> args)
+        {
+            if(args.RowData != null)
+            {
+                if (args.CommandColumn.Type == CommandButtonType.Edit)
+                {
+                    NavigationManager.NavigateTo("/editFlatOwner/" + args.RowData.FlatId);
+                }
 
-        //            }
-        //        }
-
-        //        if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
-        //        {
-        //            IsVisible = true;
-        //            UserId = Args.Data.Id;
-        //            UserName = Args.Data.Name;
-        //            Email = Args.Data.Email;
-        //        }
-
-
-        //    }
-
-
-        //}
+                if (args.CommandColumn.Type == CommandButtonType.Delete)
+                {
+                    IsVisible = true;
+                    FlatId = args.RowData.FlatId;
+                    FlatNo = args.RowData.FlatNo;
+                    Name = args.RowData.FirstName;
+                }
+            }
+        }
 
     }

@@ -37,9 +37,9 @@ namespace BethanysPieShopHRM.Server.Implementation
             return null;
         }
 
-        public async Task DeleteFlatOwner(int flatId)
+        public async Task DeleteFlatOwner(string flatNo)
         {
-            await _httpClient.DeleteAsync($"api/FlatOwner/DeleteFlat/{flatId}");
+            await _httpClient.DeleteAsync($"api/FlatOwner/DeleteFlat/{flatNo}");
         }
 
         public async Task<IEnumerable<FlatOwner>> GetAllFlatOwners()
@@ -52,7 +52,7 @@ namespace BethanysPieShopHRM.Server.Implementation
         public async Task<FlatOwner> GetFlatOwner(int flatId)
         {
             return await JsonSerializer.DeserializeAsync<FlatOwner>
-                (await _httpClient.GetStreamAsync($"api/FlatOwner/GetFlatOwnerByFlatNo/{flatId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/FlatOwner/GetFlatOwnerByFlatId/{flatId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public async Task UpdateFlatOwner(FlatOwner flatOwner)

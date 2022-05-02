@@ -7,13 +7,15 @@
     @if (!Saved)
     {
         <h1 class="page-title">Add FlatOwner</h1>
+
         <EditForm Model="@FlatOwner" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+
             <DataAnnotationsValidator />
+            <ValidationSummary />
             <div class="form-row">
                 <div class="col">
                     @*<input type="text" class="form-control" placeholder="Flat No">*@
-                    <InputText id="firstName" class="form-control" @bind-Value="@FlatOwner.FirstName" placeholder="First name"></InputText>
-                    <ValidationMessage For="@(() => FlatOwner.FirstName)" />
+                    <InputText id="firstName" class="form-control" @bind-Value="@FlatOwner.FirstName" placeholder="First name" @ref="FirstNameInputText"></InputText>
                 </div>
                 <div class="col">
                     <InputSelect id="building" class="form-control" @bind-Value="@BuildingId">
@@ -58,10 +60,9 @@
             <div class="form-row">
                 <div class="col">
                     <InputText id="familyName" class="form-control" @bind-Value="@FlatOwner.FamilyName" placeholder="Family name"></InputText>
-                    <ValidationMessage For="@(() => FlatOwner.FamilyName)" />
                 </div>
                 <div class="col">
-                    <InputText id="firstName" class="form-control" @bind-Value="@FlatOwner.FirstName" placeholder="First name"></InputText>
+                    @*<InputText id="firstName" class="form-control" @bind-Value="@FlatOwner.FirstName" placeholder="First name"></InputText>*@
                 </div>
             </div>
             <br />
@@ -94,17 +95,16 @@
             <br />
             <button type="submit" class="btn btn-primary edit-btn">Save FlatOwner</button>
             <a class="btn btn-outline-primary edit-outline-btn" @onclick="@NavigateToOverview">Cancel</a>
-            @if (FlatOwner.FlatId > 0)
+            @*@if (FlatOwner.FlatId > 0)
             {
-              <a class="btn btn-danger" @onclick="@DeleteFlatOwner">
-             Delete
-        </a>}
+                <a class="btn btn-danger" @onclick="@DeleteFlatOwner"> Delete </a>
+            }*@
         </EditForm>
     }
     else
     {
          <div class="alert @StatusClass">@Message</div>
-         <a class="btn btn-outline-primary" @onclick="@NavigateToOverview">Back to overview</a>
+         <a class="btn btn-outline-primary" @onclick="@NavigateToOverview">Back to FlatOwner List</a>
     }
 </section>
 

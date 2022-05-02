@@ -23,7 +23,7 @@ namespace BethanysPieShopHRM.Server.Pages
         [Parameter]
         public string FlatId { get; set; }
 
-        public InputText LastNameInputText { get; set; }
+        public InputText FirstNameInputText { get; set; }
 
         protected string BuildingId = string.Empty;
 
@@ -89,16 +89,6 @@ namespace BethanysPieShopHRM.Server.Pages
         {
             StatusClass = "alert-danger";
             Message = "There are some validation errors. Please try again.";
-        }
-
-        protected async Task DeleteFlatOwner()
-        {
-            await FlatOwnerDataService.DeleteFlatOwner(FlatOwner.FlatId);
-
-            StatusClass = "alert-success";
-            Message = "Deleted successfully";
-
-            Saved = true;
         }
 
         protected void NavigateToOverview()

@@ -33,6 +33,11 @@ namespace BethanysPieShopHRM.Api.Implementation
             });
         }
 
+        public FlatOwner GetFlatOwnerByFlatId(int flatId)
+        {
+            return (_context.FlatOwner.Where(a => a.FlatId == flatId).FirstOrDefault());
+        }
+
         public FlatOwner GetFlatOwnerByFlatNo(string flatNo)
         {
             return (_context.FlatOwner.Where(a => a.FlatNo == flatNo).FirstOrDefault());

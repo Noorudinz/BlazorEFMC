@@ -10,6 +10,7 @@ namespace BethanysPieShopHRM.Api.Repository
     {
         List<FlatOwner> GetFlatOwners();
         FlatOwner GetFlatOwnerByFlatNo(string flatNo);
+        FlatOwner GetFlatOwnerByFlatId(int flatId);
         CommonResponse AddFlatOwner(FlatOwner flatOwner);
         DeleteResponse DeleteFlat(string flatNo);
 

@@ -34,6 +34,13 @@ namespace BethanysPieShopHRM.Api.Controllers
             return Ok(_flatOwnerRepo.GetFlatOwnerByFlatNo(flatNo));
         }
 
+        [HttpGet]
+        [Route("GetFlatOwnerByFlatId/{flatId}")]
+        public async Task<IActionResult> GetFlatOwnerByFlatId(int flatId)
+        {
+            return Ok(_flatOwnerRepo.GetFlatOwnerByFlatId(flatId));
+        }
+
         [HttpPost]
         [Route("AddFlatOwner")]
         public async Task<IActionResult> AddFlatOwner(FlatOwner flatOwner)

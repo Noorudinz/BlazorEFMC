@@ -1,0 +1,70 @@
+﻿@page "/buildings"
+@attribute [Authorize]
+@using BethanysPieShopHRM.Shared;
+@using BethanysPieShopHRM.Server.Repository;
+@using Syncfusion.Blazor.Notifications;
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
+
+<h1 class="page-title">Buildings</h1>
+
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@GridData" AllowPaging="true">
+                <GridEditSettings AllowDeleting="true" AllowEditing="true"></GridEditSettings>
+                <GridEvents TValue="Building"></GridEvents>
+                <GridColumns>
+                    <GridColumn Field=@nameof(Building.BuildingId) HeaderText="BuildingId" IsPrimaryKey="true" Visible="false"></GridColumn>
+                    <GridColumn Field=@nameof(Building.BuildingCode) HeaderText="BuildingCode" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(Building.BuildingIncharge) HeaderText="Incharge" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(Building.ARF) HeaderText="ARF" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(Building.ERF) HeaderText="ERF" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(Building.WRF) HeaderText="WRF" Width="100"></GridColumn>
+                    <GridColumn HeaderText="Manage Records" Width="150">
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss=" e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() {IconCss=" e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+
+<button @onclick="@AddBuilding" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+
+<AddBuildingDialog @ref="AddBuildingDialog" CloseEventCallback="@AddBuildingDialog_OnDialogClose"></AddBuildingDialog>
+
+@code
+{
+    protected AddBuildingDialogBase AddBuildingDialog { get; set; }
+
+    private bool IsVisible { get; set; } = false;
+
+    public List<Building> BuildingList { get; set; }
+
+    [Inject]
+    public IBuilding BuildingDataService { get; set; }
+
+    public List<Building> GridData { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await BuildingDataService.GetAllBuildings()).ToList();
+    }
+
+    protected void AddBuilding()
+    {
+        AddBuildingDialog.Show();
+    }
+
+    public async void AddBuildingDialog_OnDialogClose()
+    {
+        BuildingList = (await BuildingDataService.GetAllBuildings()).ToList();
+        StateHasChanged();
+    }
+}

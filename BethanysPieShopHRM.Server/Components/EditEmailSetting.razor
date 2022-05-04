@@ -76,6 +76,7 @@
     [Inject]
     public IEmailSetting EmailSettingDataService { get; set; }
 
+    //Modal dialog show
     public async void ShowEdit(int Id)
     {
         emailSetting = (await EmailSettingDataService.GetEmailSettingDetail());
@@ -84,11 +85,13 @@
         StateHasChanged();
     }
 
+    //Reset
     private void ResetDialog()
     {
         emailSetting = new Email();
     }
 
+    //close dialog
     public void Close()
     {
         ShowDialog = false;
@@ -96,6 +99,7 @@
         StateHasChanged();
     }
 
+    //update email setting
     protected async Task HandleValidSubmit()
     {
         var response = await EmailSettingDataService.UpdateEmailSettingDetail(emailSetting);

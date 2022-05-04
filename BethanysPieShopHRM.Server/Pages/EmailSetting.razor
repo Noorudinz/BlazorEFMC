@@ -49,12 +49,14 @@
 
     protected EditEmailSetting EditEmailDialog { get; set; }
 
+    //Page load show table data
     protected override async Task OnInitializedAsync()
     {
         GridData = (await EmailSettingDataService.GetEmailSettingDetail());
 
     }
 
+    //show modal dialog in edit mode
     public void EditEmail(int Id)
     {
         EditEmailDialog.ShowEdit(Id);

@@ -1,0 +1,65 @@
+﻿@page "/priceFactor"
+@attribute [Authorize]
+@using BethanysPieShopHRM.Server.Repository;
+@using BethanysPieShopHRM.Shared;
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+
+            @if (GridData == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>BTU</th>
+                            <th>Electricity</th>
+                            <th>Water</th>
+                            <th>Service charges</th>
+                            <th>Other charges</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@GridData.BTUFactor</td>
+                            <td>@GridData.ElectricityFactor</td>
+                            <td>@GridData.WaterFactor</td>
+                            <td>@GridData.ServiceCharge</td>
+                            <td>@GridData.OtherCharges</td>
+                            <td><button @onclick="() => EditPriceFactor(GridData.PriceID)" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                          </tbody>
+                </table>}
+        </div>
+    </div>
+</div>
+
+<EditPriceFactor @ref="EditPriceFactorDialog"></EditPriceFactor>
+
+@code {
+
+
+    [Inject]
+    public IPriceFactor PriceFactorDataService { get; set; }
+
+    public BethanysPieShopHRM.Shared.PriceFactor GridData { get; set; }
+
+    protected EditPriceFactor EditPriceFactorDialog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await PriceFactorDataService.GetPriceFactor());
+
+    }
+
+    public void EditPriceFactor(int Id)
+    {
+        EditPriceFactorDialog.ShowEdit(Id);
+    }
+
+}

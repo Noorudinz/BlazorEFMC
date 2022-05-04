@@ -1,0 +1,114 @@
+﻿@using BethanysPieShopHRM.Server.Services;
+@using BethanysPieShopHRM.Shared;
+@using Syncfusion.Blazor.Buttons;
+@using BethanysPieShopHRM.Server.Repository;
+
+@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleLabel">Edit Email Setting</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body">
+                    <div class="row alert @StatusClass">
+                        <p>@ErrorMsg</p>
+                    </div>
+
+
+                    <EditForm Model="@emailSetting" OnValidSubmit="@HandleValidSubmit">
+
+
+                        <input type="hidden" value="@emailSetting.id" />
+
+                        <div class="form-group">
+                            <label for="Name">Email address: </label>
+                            <InputText id="Name" class="form-control" @bind-Value="@emailSetting.EmailAddress"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">Password: </label>
+                            <InputText type="password" id="Name" class="form-control" @bind-Value="@emailSetting.Password"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">Host: </label>
+                            <InputText id="Name" class="form-control" @bind-Value="@emailSetting.Host"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">Port: </label>
+                            <InputText id="Name" class="form-control" @bind-Value="@emailSetting.Port"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">CC: </label>
+                            <InputText id="Name" class="form-control" @bind-Value="@emailSetting.CC"></InputText>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Email Setting</button>
+                        <a class="btn btn-outline-primary" @onclick="@Close">Close</a>
+                    </EditForm>
+
+                </div>
+            </div>
+        </div>
+    </div>}
+
+@code {
+
+    public bool ShowDialog { get; set; }
+    public bool ShowDeleteDialog { get; set; } = false;
+    public string StatusClass { get; set; } = string.Empty;
+    public string ErrorMsg { get; set; } = string.Empty;
+
+    public Email emailSetting { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CloseEventCallback { get; set; }
+
+    [Inject]
+    public IEmailSetting EmailSettingDataService { get; set; }
+
+    //Modal dialog show
+    public async void ShowEdit(int Id)
+    {
+        emailSetting = (await EmailSettingDataService.GetEmailSettingDetail());
+
+        ShowDialog = true;
+        StateHasChanged();
+    }
+
+    //Reset
+    private void ResetDialog()
+    {
+        emailSetting = new Email();
+    }
+
+    //close dialog
+    public void Close()
+    {
+        ShowDialog = false;
+        ShowDeleteDialog = false;
+        StateHasChanged();
+    }
+
+    //update email setting
+    protected async Task HandleValidSubmit()
+    {
+        var response = await EmailSettingDataService.UpdateEmailSettingDetail(emailSetting);
+
+        ShowDialog = false;
+
+        await CloseEventCallback.InvokeAsync(true);
+        StateHasChanged();
+    }
+
+
+}

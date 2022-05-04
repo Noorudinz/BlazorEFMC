@@ -46,6 +46,14 @@ namespace BethanysPieShopHRM.Server
             //});
 
             //services.AddScoped<IEmployeeDataService, MockEmployeeDataService>();
+            services.AddHttpClient<IEmailSetting, EmailRepository>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44340/");
+            });
+            services.AddHttpClient<IPriceFactor, PriceFactorRepository>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44340/");
+            });
             services.AddHttpClient<IBuilding, BuildingRepository>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44340/");

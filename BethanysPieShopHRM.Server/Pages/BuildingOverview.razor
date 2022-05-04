@@ -8,12 +8,29 @@
 
 <h1 class="page-title">Buildings</h1>
 
+<SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+    <DialogTemplates>
+        <Header> Message </Header>
+        <Content>
+            <input type="hidden" value="@BuildingId" />
+            <p class="font-weight-bold">Are you sure want to delete ?</p>
+            <br />
+            <span class="card-text">Building Name: @BuildingName</span>
+            <br />
+            <span class="card-text">Building Code: @BuildingCode</span>
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="OK" IsPrimary="true" OnClick="@DeleteConfirm" />
+        <DialogButton Content="Cancel" OnClick="@CloseDialog" />
+    </DialogButtons>
+</SfDialog>
+
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
             <SfGrid DataSource="@GridData" AllowPaging="true">
-                <GridEditSettings AllowDeleting="true" AllowEditing="true"></GridEditSettings>
                 <GridEvents CommandClicked="OnCommandClicked" TValue="Building"></GridEvents>
                 <GridColumns>
                     <GridColumn Field=@nameof(Building.BuildingId) HeaderText="BuildingId" IsPrimaryKey="true" Visible="false"></GridColumn>
@@ -56,6 +73,10 @@
 
     public List<Building> GridData { get; set; }
 
+    private string BuildingName { get; set; }
+    private int BuildingId { get; set; }
+    private string BuildingCode { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         GridData = (await BuildingDataService.GetAllBuildings()).ToList();
@@ -81,19 +102,29 @@
                 EditBuildingDialog.ShowEdit(args.RowData.BuildingId);
             }
 
-            //if (args.CommandColumn.Type == CommandButtonType.Delete)
-            //{
-            //    IsVisible = true;
-            //    FlatId = args.RowData.FlatId;
-            //    FlatNo = args.RowData.FlatNo;
-            //    Name = args.RowData.FirstName;
-            //}
+            if (args.CommandColumn.Type == CommandButtonType.Delete)
+            {
+                IsVisible = true;
+                BuildingId = args.RowData.BuildingId;
+                BuildingCode = args.RowData.BuildingCode;
+                BuildingName = args.RowData.BuildingName;
+            }
         }
     }
 
-    //public async void EditBuildingDialog_OnDialogClose()
-    //{
-    //    GridData = (await BuildingDataService.GetAllBuildings()).ToList();
-    //    StateHasChanged();
-    //}
+    private async void DeleteConfirm()
+    {
+        int buildingId = BuildingId;
+        string buildingCode = BuildingCode;
+        await BuildingDataService.DeleteBuilding(buildingId, buildingCode);
+
+        GridData = (await BuildingDataService.GetAllBuildings()).ToList();
+        StateHasChanged();
+        CloseDialog();
+    }
+
+    private void CloseDialog()
+    {
+        this.IsVisible = false;
+    }
 }

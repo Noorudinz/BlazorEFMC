@@ -1,0 +1,63 @@
+﻿@page "/emailSettings"
+@attribute [Authorize]
+@using BethanysPieShopHRM.Server.Repository;
+@using BethanysPieShopHRM.Shared;
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+
+            @if (GridData == null)
+            {
+            <p><em>Loading...</em></p>
+            }
+            else
+            {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>EmailAddress</th>                  
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>CC</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@GridData.EmailAddress</td>               
+                        <td>@GridData.Host</td>
+                        <td>@GridData.Port</td>
+                        <td>@GridData.CC</td>
+                        <td><button @onclick="() => EditEmail(GridData.id)" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>}
+        </div>
+    </div>
+</div>
+
+<EditEmailSetting @ref="EditEmailDialog"></EditEmailSetting>
+
+@code {
+
+
+    [Inject]
+    public IEmailSetting EmailSettingDataService { get; set; }
+
+    public BethanysPieShopHRM.Shared.Email GridData { get; set; }
+
+    protected EditEmailSetting EditEmailDialog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await EmailSettingDataService.GetEmailSettingDetail());
+
+    }
+
+    public void EditEmail(int Id)
+    {
+        EditEmailDialog.ShowEdit(Id);
+    }
+
+}

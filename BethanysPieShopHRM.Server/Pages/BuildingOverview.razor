@@ -14,7 +14,7 @@
         <div class="row">
             <SfGrid DataSource="@GridData" AllowPaging="true">
                 <GridEditSettings AllowDeleting="true" AllowEditing="true"></GridEditSettings>
-                <GridEvents TValue="Building"></GridEvents>
+                <GridEvents CommandClicked="OnCommandClicked" TValue="Building"></GridEvents>
                 <GridColumns>
                     <GridColumn Field=@nameof(Building.BuildingId) HeaderText="BuildingId" IsPrimaryKey="true" Visible="false"></GridColumn>
                     <GridColumn Field=@nameof(Building.BuildingCode) HeaderText="BuildingCode" Width="100"></GridColumn>
@@ -39,9 +39,13 @@
 
 <AddBuildingDialog @ref="AddBuildingDialog" CloseEventCallback="@AddBuildingDialog_OnDialogClose"></AddBuildingDialog>
 
+<AddBuildingDialog @ref="EditBuildingDialog"></AddBuildingDialog>
+
 @code
 {
     protected AddBuildingDialogBase AddBuildingDialog { get; set; }
+
+    protected AddBuildingDialog EditBuildingDialog { get; set; }
 
     private bool IsVisible { get; set; } = false;
 
@@ -67,4 +71,29 @@
         BuildingList = (await BuildingDataService.GetAllBuildings()).ToList();
         StateHasChanged();
     }
+
+    public void OnCommandClicked(CommandClickEventArgs<BethanysPieShopHRM.Shared.Building> args)
+    {
+        if (args.RowData != null)
+        {
+            if (args.CommandColumn.Type == CommandButtonType.Edit)
+            {
+                EditBuildingDialog.ShowEdit(args.RowData.BuildingId);
+            }
+
+            //if (args.CommandColumn.Type == CommandButtonType.Delete)
+            //{
+            //    IsVisible = true;
+            //    FlatId = args.RowData.FlatId;
+            //    FlatNo = args.RowData.FlatNo;
+            //    Name = args.RowData.FirstName;
+            //}
+        }
+    }
+
+    //public async void EditBuildingDialog_OnDialogClose()
+    //{
+    //    GridData = (await BuildingDataService.GetAllBuildings()).ToList();
+    //    StateHasChanged();
+    //}
 }

@@ -48,5 +48,14 @@ namespace BethanysPieShopHRM.Server.Components
             await CloseEventCallback.InvokeAsync(true);
             StateHasChanged();
         }
+
+        public async void ShowEdit(int Id)
+        {
+            Building = (await BuildingDataService.GetBuilding(Id));
+
+            ShowDialog = true;
+            StateHasChanged();
+
+        }
     }
 }

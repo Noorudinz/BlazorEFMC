@@ -11,6 +11,6 @@ namespace BethanysPieShopHRM.Api.Repository
         List<Building> GetBuildings();
         BuildingResponse AddOrUpdateBuilding(Building building);
         DeleteResponse DeleteBuilding(int id, string code);
-        List<Building> GetBuildingById(int Id);
+        Building GetBuildingById(int Id);
     }
 }

@@ -46,5 +46,6 @@ namespace BethanysPieShopHRM.Server.Components
             await CloseEventCallback.InvokeAsync(true);
             StateHasChanged();
         }
+                
     }
 }

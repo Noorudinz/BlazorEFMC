@@ -1,0 +1,97 @@
+﻿
+@inherits AddBuildingDialogBase
+
+
+@if (ShowDialog)
+{
+<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" style="display: block; padding-right: 17px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleLabel">Add Building</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <EditForm Model="@Building" OnValidSubmit="@HandleValidSubmit">
+
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="lastName">Building Name: </label>
+                                <InputText id="lastName" class="form-control" @bind-Value="@Building.BuildingName" placeholder="Enter Building Name"></InputText>
+                                <ValidationMessage For="@(() => Building.BuildingName)" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">Building Code: </label>
+                                <InputText id="firstName" class="form-control" @bind-Value="@Building.BuildingCode" placeholder="Enter first name"></InputText>
+                                <ValidationMessage For="@(() => Building.BuildingCode)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">Building Incharge: </label>
+                                <InputText id="firstName" class="form-control" @bind-Value="@Building.BuildingIncharge" placeholder="Enter first name"></InputText>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">Floors: </label>
+                                <InputText id="firstName" class="form-control" @bind-Value="@Building.Floors" placeholder="Enter first name"></InputText>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">ERF: </label>
+                                <InputNumber id="firstName" class="form-control" @bind-Value="@Building.ERF" placeholder="Enter first name"></InputNumber>
+                                <ValidationMessage For="@(() => Building.ERF)" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">ARF: </label>
+                                <InputNumber id="firstName" class="form-control" @bind-Value="@Building.ARF" placeholder="Enter first name"></InputNumber>
+                                <ValidationMessage For="@(() => Building.ARF)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstName">WRF: </label>
+                                <InputNumber id="firstName" class="form-control" @bind-Value="@Building.WRF" placeholder="Enter first name"></InputNumber>
+                                <ValidationMessage For="@(() => Building.WRF)" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="email">Remarks: </label>
+                                <InputText id="email" class="form-control" @bind-Value="@Building.Remarks" placeholder="Enter email"></InputText>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <button type="submit" class="btn btn-primary">Save Building</button>
+                    <a class="btn btn-outline-primary" @onclick="@Close">Close</a>
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>}
+

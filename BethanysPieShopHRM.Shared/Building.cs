@@ -8,14 +8,23 @@ namespace BethanysPieShopHRM.Shared
 {
     public class Building
     {
-        [Key]
         public int BuildingId { get; set; }
+
+        [Required]
         public string BuildingName { get; set; }
+
+        [Required]
         public string BuildingCode { get; set; }
         public string BuildingIncharge { get; set; }
         public string Floors { get; set; }
+
+        [Required]
         public decimal? ERF { get; set; }
+
+        [Required]
         public decimal? ARF { get; set; }
+
+        [Required]
         public decimal? WRF { get; set; }
         public string Remarks { get; set; }
         public string created_ByUserId { get; set; }

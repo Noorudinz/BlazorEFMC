@@ -106,9 +106,9 @@ namespace BethanysPieShopHRM.Api.Implementation
             });
         }
 
-        public List<Building> GetBuildingById(int Id)
+        public Building GetBuildingById(int Id)
         {
-            var buildings = _context.Building.Where(f => f.BuildingId == Id).ToList();
+            var buildings = _context.Building.Where(f => f.BuildingId == Id).FirstOrDefault();
             return (buildings);
         }
 

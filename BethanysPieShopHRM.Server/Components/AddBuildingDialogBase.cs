@@ -1,24 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using BethanysPieShopHRM.Server.Services;
-using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
+using BethanysPieShopHRM.Shared;
+using BethanysPieShopHRM.Server.Repository;
 
 namespace BethanysPieShopHRM.Server.Components
 {
-    public class AddEmployeeDialogBase : ComponentBase
+    public class AddBuildingDialogBase: ComponentBase
     {
         public bool ShowDialog { get; set; }
 
-        public Employee Employee { get; set; } = new Employee { CountryId = 1, JobCategoryId = 1, BirthDate = DateTime.Now, JoinedDate = DateTime.Now };
+        public Building Building { get; set; } = new Building { };
 
         [Parameter]
         public EventCallback<bool> CloseEventCallback { get; set; }
 
-        [Inject] 
-        public IEmployeeDataService EmployeeDataService { get; set; }
+        [Inject]
+        public IBuilding BuildingDataService { get; set; }
 
-      
+
 
         public void Show()
         {
@@ -29,7 +31,7 @@ namespace BethanysPieShopHRM.Server.Components
 
         private void ResetDialog()
         {
-            Employee = new Employee { CountryId = 1, JobCategoryId = 1, BirthDate = DateTime.Now, JoinedDate = DateTime.Now };
+            Building = new Building { };
         }
 
         public void Close()
@@ -40,12 +42,20 @@ namespace BethanysPieShopHRM.Server.Components
 
         protected async Task HandleValidSubmit()
         {
-            await EmployeeDataService.AddEmployee(Employee);
+            await BuildingDataService.AddBuilding(Building);
             ShowDialog = false;
 
             await CloseEventCallback.InvokeAsync(true);
             StateHasChanged();
         }
-                
+
+        public async void ShowEdit(int Id)
+        {
+            Building = (await BuildingDataService.GetBuilding(Id));
+
+            ShowDialog = true;
+            StateHasChanged();
+
+        }
     }
 }

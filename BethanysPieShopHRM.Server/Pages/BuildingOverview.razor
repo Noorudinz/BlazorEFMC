@@ -1,0 +1,130 @@
+﻿@page "/buildings"
+@attribute [Authorize]
+@using BethanysPieShopHRM.Shared;
+@using BethanysPieShopHRM.Server.Repository;
+@using Syncfusion.Blazor.Notifications;
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
+
+<h1 class="page-title">Buildings</h1>
+
+<SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
+    <DialogTemplates>
+        <Header> Message </Header>
+        <Content>
+            <input type="hidden" value="@BuildingId" />
+            <p class="font-weight-bold">Are you sure want to delete ?</p>
+            <br />
+            <span class="card-text">Building Name: @BuildingName</span>
+            <br />
+            <span class="card-text">Building Code: @BuildingCode</span>
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="OK" IsPrimary="true" OnClick="@DeleteConfirm" />
+        <DialogButton Content="Cancel" OnClick="@CloseDialog" />
+    </DialogButtons>
+</SfDialog>
+
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@GridData" AllowPaging="true">
+                <GridEvents CommandClicked="OnCommandClicked" TValue="Building"></GridEvents>
+                <GridColumns>
+                    <GridColumn Field=@nameof(Building.BuildingId) HeaderText="BuildingId" IsPrimaryKey="true" Visible="false"></GridColumn>
+                    <GridColumn Field=@nameof(Building.BuildingCode) HeaderText="BuildingCode" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(Building.BuildingIncharge) HeaderText="Incharge" Width="140"></GridColumn>
+                    <GridColumn Field=@nameof(Building.ARF) HeaderText="ARF" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(Building.ERF) HeaderText="ERF" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(Building.WRF) HeaderText="WRF" Width="100"></GridColumn>
+                    <GridColumn HeaderText="Manage Records" Width="150">
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss=" e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                            <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() {IconCss=" e-icons e-delete", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+
+<button @onclick="@AddBuilding" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+
+<AddBuildingDialog @ref="AddBuildingDialog" CloseEventCallback="@AddBuildingDialog_OnDialogClose"></AddBuildingDialog>
+
+<AddBuildingDialog @ref="EditBuildingDialog"></AddBuildingDialog>
+
+@code
+{
+    protected AddBuildingDialogBase AddBuildingDialog { get; set; }
+
+    protected AddBuildingDialog EditBuildingDialog { get; set; }
+
+    private bool IsVisible { get; set; } = false;
+
+    public List<Building> BuildingList { get; set; }
+
+    [Inject]
+    public IBuilding BuildingDataService { get; set; }
+
+    public List<Building> GridData { get; set; }
+
+    private string BuildingName { get; set; }
+    private int BuildingId { get; set; }
+    private string BuildingCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await BuildingDataService.GetAllBuildings()).ToList();
+    }
+
+    protected void AddBuilding()
+    {
+        AddBuildingDialog.Show();
+    }
+
+    public async void AddBuildingDialog_OnDialogClose()
+    {
+        BuildingList = (await BuildingDataService.GetAllBuildings()).ToList();
+        StateHasChanged();
+    }
+
+    public void OnCommandClicked(CommandClickEventArgs<BethanysPieShopHRM.Shared.Building> args)
+    {
+        if (args.RowData != null)
+        {
+            if (args.CommandColumn.Type == CommandButtonType.Edit)
+            {
+                EditBuildingDialog.ShowEdit(args.RowData.BuildingId);
+            }
+
+            if (args.CommandColumn.Type == CommandButtonType.Delete)
+            {
+                IsVisible = true;
+                BuildingId = args.RowData.BuildingId;
+                BuildingCode = args.RowData.BuildingCode;
+                BuildingName = args.RowData.BuildingName;
+            }
+        }
+    }
+
+    private async void DeleteConfirm()
+    {
+        int buildingId = BuildingId;
+        string buildingCode = BuildingCode;
+        await BuildingDataService.DeleteBuilding(buildingId, buildingCode);
+
+        GridData = (await BuildingDataService.GetAllBuildings()).ToList();
+        StateHasChanged();
+        CloseDialog();
+    }
+
+    private void CloseDialog()
+    {
+        this.IsVisible = false;
+    }
+}

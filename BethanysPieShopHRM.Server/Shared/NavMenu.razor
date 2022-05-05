@@ -77,6 +77,27 @@
                         <NavLink class="list-group-item list-group-item-action bg-light" href="/priceFactor">
                             <span class="oi oi-list-rich" aria-hidden="true"></span> Price Factors
                         </NavLink>
+
+                        <NavLink class="list-group-item list-group-item-action bg-light" href="/" @onclick="()=>expandSubMenu= !expandSubMenu">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Imports
+                        </NavLink>
+
+                        @if (expandSubMenu)
+                        {
+
+                            <NavLink class="list-group-item list-group-item-action bg-light" href="/btuImport">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> BTU 
+                            </NavLink>
+
+                            <NavLink class="list-group-item list-group-item-action bg-light" href="/electricityImport">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Electricity
+                            </NavLink>
+
+                            <NavLink class="list-group-item list-group-item-action bg-light" href="/waterImport">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Water
+                            </NavLink>
+                        }
+
                     </Authorized>
 
                     <NotAuthorized>

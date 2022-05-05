@@ -1,4 +1,7 @@
 ﻿using BethanysPieShopHRM.Api.Repository;
+using BethanysPieShopHRM.Shared;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -74,6 +77,27 @@ namespace BethanysPieShopHRM.Api.Controllers
 
             return Ok(_importsRepo.UploadElectricity(file, pathToSave, folderName));
           
+        }
+
+        [HttpPost("uploadBlazorBTU")]
+        public async Task<IActionResult> Savefile(IList<IFormFile> UploadFiles)
+        {
+            return null;
+        }
+
+        [HttpPost("removeBlazorBTU")]
+        public void Remove(IList<IFormFile> UploadFiles)
+        {
+           
+        }
+
+        [HttpPost("SaveBTU")]
+        public async Task<IActionResult> Save([FromBody] SaveFile saveFile)
+        {          
+            var folderName = Path.Combine("Resources", "Imports/BTU");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            return Ok(_importsRepo.UploadBlazorBTU(saveFile, pathToSave, folderName));
         }
     }
 

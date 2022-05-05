@@ -46,6 +46,10 @@ namespace BethanysPieShopHRM.Server
             //});
 
             //services.AddScoped<IEmployeeDataService, MockEmployeeDataService>();
+            services.AddHttpClient<IImports, ImportRepository>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44340/");
+            });
             services.AddHttpClient<IEmailSetting, EmailRepository>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44340/");
@@ -86,6 +90,8 @@ namespace BethanysPieShopHRM.Server
             {
                 client.BaseAddress = new Uri("https://localhost:44340/");
             });
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,6 +111,11 @@ namespace BethanysPieShopHRM.Server
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseCors(x => x.AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .SetIsOriginAllowed(origin => true) // allow any origin
+                  .AllowCredentials());
 
             app.UseRouting();
 

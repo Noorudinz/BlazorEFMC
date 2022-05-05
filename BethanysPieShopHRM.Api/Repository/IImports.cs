@@ -16,6 +16,7 @@ namespace BethanysPieShopHRM.Api.Repository
         CommonResponse UploadBTU(IFormFile file, string path, string folder);
         CommonResponse UploadWater(IFormFile file, string path, string folder);
         CommonResponse UploadElectricity(IFormFile file, string path, string folder);
+        CommonResponse UploadBlazorBTU(SaveFile saveFile, string path, string folder);
 
     }
 }

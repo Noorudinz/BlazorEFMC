@@ -261,5 +261,115 @@ namespace BethanysPieShopHRM.Api.Implementation
                 });
             }
         }
+
+        public CommonResponse UploadBlazorElectricity(SaveFile saveFile, string path, string folder)
+        {
+            try
+            {
+                if (saveFile != null)
+                {
+                    string datetime = DateTime.Now.ToString("yyyy-MMM-dd__HH-mm-ss__");
+                    string fileExtenstion = saveFile.Files[0].FileType.ToLower().Contains("xls") ? "xls" : "xlsx";
+                    string fileName = $"{path}/{datetime}Electricity.{fileExtenstion}";
+                    using (var fileStream = System.IO.File.Create(fileName))
+                    {
+                        fileStream.WriteAsync(saveFile.Files[0].Data);
+                    }
+
+                    var electricityList = ExcelUtility.ImportExcelUtility.Read(fileName);
+
+                    foreach (var electricity in electricityList)
+                    {
+                        var importElectricity = new Electricity();
+                        importElectricity.FlatNo = electricity.FlatNo;
+                        importElectricity.MeterID = electricity.MeterID;
+                        importElectricity.Reading = electricity.Reading;
+                        importElectricity.ReadingDate = new DateTime(2021, 12, 31); //DateTime.Now;
+                        importElectricity.CreatedDate = new DateTime(2021, 12, 31); //DateTime.Now;
+                        importElectricity.flag = false;
+
+                        _context.Electricity.Add(importElectricity);
+                        //_context.SaveChanges();
+                    }
+
+                    return (new CommonResponse()
+                    {
+                        Message = "Successfully Electricity readings imported :" + electricityList.Count().ToString() + " Counts",
+                        IsUpdated = true
+                    });
+                }
+
+                return (new CommonResponse()
+                {
+                    Message = "Bad request",
+                    IsUpdated = false
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return (new CommonResponse()
+                {
+                    Message = ex.ToString(),
+                    IsUpdated = false
+                });
+            }
+        }
+
+        public CommonResponse UploadBlazorWater(SaveFile saveFile, string path, string folder)
+        {
+            try
+            {
+                if (saveFile != null)
+                {
+                    string datetime = DateTime.Now.ToString("yyyy-MMM-dd__HH-mm-ss__");
+                    string fileExtenstion = saveFile.Files[0].FileType.ToLower().Contains("xls") ? "xls" : "xlsx";
+                    string fileName = $"{path}/{datetime}Water.{fileExtenstion}";
+                    using (var fileStream = System.IO.File.Create(fileName))
+                    {
+                        fileStream.WriteAsync(saveFile.Files[0].Data);
+                    }
+
+                    var waterList = ExcelUtility.ImportExcelUtility.Read(fileName);
+
+                    foreach (var water in waterList)
+                    {
+                        var importWater = new Water();
+                        importWater.FlatNo = water.FlatNo;
+                        importWater.MeterID = water.MeterID;
+                        importWater.Reading = water.Reading;
+                        importWater.ReadingDate = new DateTime(2021, 12, 31); //DateTime.Now;
+                        importWater.CreatedDate = new DateTime(2021, 12, 31); //DateTime.Now;
+                        importWater.flag = false;
+
+                        _context.Water.Add(importWater);
+                        //_context.SaveChanges();
+                    }
+
+                    return (new CommonResponse()
+                    {
+                        Message = "Successfully Water readings imported :" + waterList.Count().ToString() + " Counts",
+                        IsUpdated = true
+                    });
+                }
+
+                return (new CommonResponse()
+                {
+                    Message = "Bad request",
+                    IsUpdated = false
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return (new CommonResponse()
+                {
+                    Message = ex.ToString(),
+                    IsUpdated = false
+                });
+            }
+        }
+
+      
     }
 }

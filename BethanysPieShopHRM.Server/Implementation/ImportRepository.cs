@@ -50,14 +50,22 @@ namespace BethanysPieShopHRM.Server.Implementation
             }
         }
 
-        public Task UploadElectricity()
+        public async Task UploadElectricity(List<FileData> fileData)
         {
-            throw new NotImplementedException();
+            if (fileData.Count > 0)
+            {
+                var payload = new SaveFile { Files = fileData };
+                await _httpClient.PostAsJsonAsync("api/Imports/SaveElectricity", payload);
+            }
         }
 
-        public Task UploadWater()
+        public async Task UploadWater(List<FileData> fileData)
         {
-            throw new NotImplementedException();
+            if (fileData.Count > 0)
+            {
+                var payload = new SaveFile { Files = fileData };
+                await _httpClient.PostAsJsonAsync("api/Imports/SaveWater", payload);
+            }
         }
     }
 }

@@ -1,0 +1,85 @@
+﻿@page "/btuImport"
+@using Syncfusion.Blazor.Calendars
+@using BethanysPieShopHRM.Server.Repository;
+@using BethanysPieShopHRM.Shared;
+
+<h1>Import BTU</h1>
+
+<section class="content">
+    <div class="row">
+        <span class="col-12 float-sm-right"><a href="../../../assets/excel/formate.xlsx">Download formate</a></span>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="possesionDate">Import date</label>
+                                <SfDatePicker Max="MaxDate" Value="DateValue"></SfDatePicker>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <InputFile OnChange="@UploadFile" />
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button @onclick="HandleValidSubmit" class="btn btn-success">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body">
+
+                    <!--container-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    public DateTime MaxDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+    public InputFileChangeEventArgs fileEvent { get; set; }
+    IReadOnlyList<IBrowserFile> selectedFiles;
+
+    [Inject]
+    public IImports ImportDataService { get; set; }
+
+    List<string> xlsUrls = new List<string>();
+    List<FileData> fileData = new List<FileData>();
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        selectedFiles = e.GetMultipleFiles();
+
+        foreach (IBrowserFile xlsFile in e.GetMultipleFiles(1))
+        {
+            var buffers = new byte[xlsFile.Size];
+            await xlsFile.OpenReadStream().ReadAsync(buffers);
+            string imageType = xlsFile.ContentType;
+            string imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+            xlsUrls.Add(imgUrl);
+            fileData.Add(new FileData
+            {
+                Data = buffers,
+                FileType = imageType,
+                Size = xlsFile.Size
+            });
+        }
+    }
+
+    protected async Task HandleValidSubmit()
+    {        
+        await ImportDataService.UploadBTU(fileData);
+    }
+}

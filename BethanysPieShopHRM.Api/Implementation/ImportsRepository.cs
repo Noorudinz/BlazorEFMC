@@ -207,5 +207,59 @@ namespace BethanysPieShopHRM.Api.Implementation
                 });
             }
         }
+
+        public CommonResponse UploadBlazorBTU(SaveFile saveFile, string path, string folder)
+        {
+            try
+            {
+                if (saveFile != null)
+                {
+                    string datetime = DateTime.Now.ToString("yyyy-MMM-dd__HH-mm-ss__");
+                    string fileExtenstion = saveFile.Files[0].FileType.ToLower().Contains("xls") ? "xls" : "xlsx";
+                    string fileName = $"{path}/{datetime}BTU.{fileExtenstion}";
+                    using (var fileStream = System.IO.File.Create(fileName))
+                    {
+                        fileStream.WriteAsync(saveFile.Files[0].Data);
+                    }
+
+                    var btuList = ExcelUtility.ImportExcelUtility.Read(fileName);
+
+                    foreach (var btu in btuList)
+                    {
+                        var importBtu = new BTU();
+                        importBtu.FlatNo = btu.FlatNo;
+                        importBtu.MeterID = btu.MeterID;
+                        importBtu.Reading = btu.Reading;
+                        importBtu.ReadingDate = new DateTime(2021, 12, 31); //DateTime.Now;
+                        importBtu.CreatedDate = new DateTime(2021, 12, 31); //DateTime.Now;
+                        importBtu.flag = false;
+
+                        _context.BTU.Add(importBtu);
+                        //_context.SaveChanges();
+                    }
+
+                    return (new CommonResponse()
+                    {
+                        Message = "Successfully BTU readings imported :" + btuList.Count().ToString() + " Counts",
+                        IsUpdated = true
+                    });
+                }
+
+                return (new CommonResponse()
+                {
+                    Message = "Bad request",
+                    IsUpdated = false
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return (new CommonResponse()
+                {
+                    Message = ex.ToString(),
+                    IsUpdated = false
+                });
+            }
+        }
     }
 }

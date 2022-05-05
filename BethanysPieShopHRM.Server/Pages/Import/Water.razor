@@ -1,4 +1,4 @@
-﻿@page "/btuImport"
+﻿@page "/waterImport"
 @using Syncfusion.Blazor.Calendars
 @using BethanysPieShopHRM.Server.Repository;
 @using BethanysPieShopHRM.Shared;
@@ -8,7 +8,7 @@
     var Tool = (new List<string>() { "Search" });
 }
 
-<h1>Import BTU</h1>
+<h1>Import Water</h1>
 
 <section class="content">
     <div class="row">
@@ -46,11 +46,11 @@
                             <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
                             </GridPageSettings>
                             <GridColumns>
-                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.BTU.ID) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
-                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.BTU.FlatNo) HeaderText="FlatNo" Width="150"></GridColumn>
-                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.BTU.MeterID) HeaderText="MeterID" Width="140"></GridColumn>
-                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.BTU.Reading) HeaderText="Reading" Width="140"></GridColumn>
-                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.BTU.ReadingDate) HeaderText="ReadingDate" Format="d" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Water.ID) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Water.FlatNo) HeaderText="FlatNo" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Water.MeterID) HeaderText="MeterID" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Water.Reading) HeaderText="Reading" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Water.ReadingDate) HeaderText="ReadingDate" Format="d" Width="140"></GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
@@ -73,13 +73,13 @@
     List<string> xlsUrls = new List<string>();
     List<FileData> fileData = new List<FileData>();
 
-    public List<BethanysPieShopHRM.Shared.BTU> GridData { get; set; }
+    public List<BethanysPieShopHRM.Shared.Water> GridData { get; set; }
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     protected override async Task OnInitializedAsync()
     {
-        GridData = (await ImportDataService.GetAllBTU()).ToList();
+        GridData = (await ImportDataService.GetAllWater()).ToList();
     }
 
 
@@ -105,6 +105,6 @@
 
     protected async Task HandleValidSubmit()
     {
-        await ImportDataService.UploadBTU(fileData);
+        await ImportDataService.UploadWater(fileData);
     }
 }

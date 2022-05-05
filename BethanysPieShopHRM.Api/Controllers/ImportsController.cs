@@ -79,25 +79,32 @@ namespace BethanysPieShopHRM.Api.Controllers
           
         }
 
-        [HttpPost("uploadBlazorBTU")]
-        public async Task<IActionResult> Savefile(IList<IFormFile> UploadFiles)
-        {
-            return null;
-        }
-
-        [HttpPost("removeBlazorBTU")]
-        public void Remove(IList<IFormFile> UploadFiles)
-        {
-           
-        }
-
         [HttpPost("SaveBTU")]
-        public async Task<IActionResult> Save([FromBody] SaveFile saveFile)
+        public async Task<IActionResult> SaveBTU([FromBody] SaveFile saveFile)
         {          
             var folderName = Path.Combine("Resources", "Imports/BTU");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             return Ok(_importsRepo.UploadBlazorBTU(saveFile, pathToSave, folderName));
+        }
+
+
+        [HttpPost("SaveElectricity")]
+        public async Task<IActionResult> SaveElectricity([FromBody] SaveFile saveFile)
+        {
+            var folderName = Path.Combine("Resources", "Imports/Electricity");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            return Ok(_importsRepo.UploadBlazorElectricity(saveFile, pathToSave, folderName));
+        }
+
+        [HttpPost("SaveWater")]
+        public async Task<IActionResult> SaveWater([FromBody] SaveFile saveFile)
+        {
+            var folderName = Path.Combine("Resources", "Imports/Water");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            return Ok(_importsRepo.UploadBlazorWater(saveFile, pathToSave, folderName));
         }
     }
 

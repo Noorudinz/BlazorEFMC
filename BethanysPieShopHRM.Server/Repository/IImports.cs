@@ -15,7 +15,7 @@ namespace BethanysPieShopHRM.Server.Repository
         Task<IEnumerable<Electricity>> GetAllElectricity();
         Task<IEnumerable<Water>> GetAllWater();
         Task UploadBTU(List<FileData> fileData);
-        Task UploadElectricity();
-        Task UploadWater();
+        Task UploadElectricity(List<FileData> fileData);
+        Task UploadWater(List<FileData> fileData);
     }
 }

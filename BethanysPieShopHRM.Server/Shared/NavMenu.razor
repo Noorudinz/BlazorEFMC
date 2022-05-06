@@ -86,7 +86,7 @@
                         {
 
                             <NavLink class="list-group-item list-group-item-action bg-light" href="/btuImport">
-                                <span class="oi oi-list-rich" aria-hidden="true"></span> BTU 
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> BTU
                             </NavLink>
 
                             <NavLink class="list-group-item list-group-item-action bg-light" href="/electricityImport">
@@ -95,6 +95,26 @@
 
                             <NavLink class="list-group-item list-group-item-action bg-light" href="/waterImport">
                                 <span class="oi oi-list-rich" aria-hidden="true"></span> Water
+                            </NavLink>
+                        }
+
+                        <NavLink class="list-group-item list-group-item-action bg-light" href="/" @onclick="()=>expandSubMenu= !expandSubMenu">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Invoice
+                        </NavLink>
+
+                        @if (expandSubMenu)
+                        {
+
+                            <NavLink class="list-group-item list-group-item-action bg-light" href="/invoiceList">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Invoice List
+                            </NavLink>
+
+                            <NavLink class="list-group-item list-group-item-action bg-light" href="/billGeneration">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Bill Generation
+                            </NavLink>
+
+                            <NavLink class="list-group-item list-group-item-action bg-light" href="/sendEmail">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Send Email
                             </NavLink>
                         }
 

@@ -53,5 +53,12 @@ namespace BethanysPieShopHRM.Api.Controllers
         {
             return Ok(_invoiceRepo.GetMailListToSendByPeriods(selectedDate));
         }
+
+        [HttpGet]
+        [Route("InvoiceDetail/{billNo}")]
+        public async Task<IActionResult> InvoiceDetail(Int64 billNo)
+        {
+            return Ok(_invoiceRepo.InvoiceDetails(billNo));
+        }
     }
 }

@@ -22,9 +22,10 @@ namespace BethanysPieShopHRM.Server.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<List<Bills>> InvoiceByBillNo(long billNo)
+        public async Task<Bills> InvoiceDetails(long billNo)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<Bills>
+                (await _httpClient.GetStreamAsync($"api/Invoice/InvoiceDetail/{billNo}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public Task<List<Bills>> InvoiceByFlatNo(string flatNo)
@@ -42,6 +43,11 @@ namespace BethanysPieShopHRM.Server.Implementation
         {
             return await JsonSerializer.DeserializeAsync<List<Bills>>
                 (await _httpClient.GetStreamAsync($"api/Invoice/InvoiceByPeriods/{selectedDate}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public Task<List<Bills>> InvoiceByBillNo(long billNo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

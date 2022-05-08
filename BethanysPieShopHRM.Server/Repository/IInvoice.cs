@@ -13,6 +13,7 @@ namespace BethanysPieShopHRM.Server.Repository
         Task<List<Bills>> InvoiceByBillNo(Int64 billNo);
         Task<List<Bills>> InvoiceByPeriods(DateTime selectedDate);
         Task<List<Bills>> GetMailListToSendByPeriods(DateTime selectedDate);
+        Task<Bills> InvoiceDetails(long billNo);
 
     }
 }

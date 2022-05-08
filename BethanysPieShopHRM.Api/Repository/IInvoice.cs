@@ -13,5 +13,6 @@ namespace BethanysPieShopHRM.Api.Repository
         List<Bills> InvoiceByBillNo(Int64 billNo);
         List<Bills> InvoiceByPeriods(DateTime selectedDate);
         List<Bills> GetMailListToSendByPeriods(DateTime selectedDate);
+        Bills InvoiceDetails(Int64 billNo);
     }
 }

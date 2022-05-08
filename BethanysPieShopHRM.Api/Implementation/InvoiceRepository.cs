@@ -36,6 +36,13 @@ namespace BethanysPieShopHRM.Api.Implementation
             return (records);
         }
 
+        public Bills InvoiceDetails(long billNo)
+        {
+            var records = _context.Bills.Where(f => f.BillNo == billNo).FirstOrDefault();
+
+            return (records);
+        }
+
         public List<Bills> InvoiceByFlatNo(string flatNo)
         {
             var flatDetail = _context.FlatOwner.FirstOrDefault(f => f.FlatNo == flatNo);

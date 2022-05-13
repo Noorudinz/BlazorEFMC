@@ -1,0 +1,97 @@
+﻿@page "/billGeneration"
+@using Syncfusion.Blazor.Calendars
+@inherits BillGenerationBase
+
+@{
+    var Tool = (new List<string>() { "Search" });
+}
+
+<style>
+    .control-wrapper {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px 0px 10px;
+    }
+
+    .example-label {
+        font-size: 14px;
+        display: block;
+        margin: 0;
+        padding: 20px 0px 0px;
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Bill generation</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="month">Select Month</label>
+                                    <SfDatePicker Max="MaxDate" Value="DateValue" ValueChange="ValueChangeHandler" Placeholder="Choose a Month" Format="MMMM yyyy" Start="CalendarView.Year" Depth="CalendarView.Year" ShowClearButton="true"></SfDatePicker>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="find">Find</label>
+                                            <button @onclick="FindOutBill" class="btn btn-success">Find</button>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-6">
+                                            <div class="form-group">
+                                                <label for="Generate">Generate bill</label>
+                                                <button @onclick="GenerateBill" class="btn btn-success">Generate</button>
+                                            </div>
+                                        </div>*@k
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <SfGrid DataSource="@GridData" AllowPaging="true" Toolbar="@Tool">
+                            <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                            </GridPageSettings>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.BillNo) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.FlatNo) HeaderText="FlatNo" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.cycle_from) HeaderText="From" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.cycle_to) HeaderText="To" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.current_bill) HeaderText="Current Bill" Format="d" Width="140"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+
+
+@code {
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+}

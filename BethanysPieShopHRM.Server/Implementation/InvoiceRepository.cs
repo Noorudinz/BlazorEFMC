@@ -41,8 +41,9 @@ namespace BethanysPieShopHRM.Server.Implementation
 
         public async Task<List<Bills>> InvoiceByPeriods(DateTime selectedDate)
         {
-            return await JsonSerializer.DeserializeAsync<List<Bills>>
+            var r = await JsonSerializer.DeserializeAsync<List<Bills>>
                 (await _httpClient.GetStreamAsync($"api/Invoice/InvoiceByPeriods/{selectedDate}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            return r;
         }
 
         public Task<List<Bills>> InvoiceByBillNo(long billNo)

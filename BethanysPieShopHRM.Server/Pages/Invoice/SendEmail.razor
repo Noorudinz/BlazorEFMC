@@ -1,0 +1,93 @@
+﻿@page "/sendEmail"
+@using Syncfusion.Blazor.Calendars
+@using BethanysPieShopHRM.Shared;
+@using Syncfusion.Blazor.Grids;
+@inherits SendEmailBase
+
+@{
+    var Tool = (new List<string>() { "Search" });
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Send Bills</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="month">Select Month</label>
+                                    <SfDatePicker Max="MaxDate" Value="DateValue" Placeholder="Choose a Month" Format="MMMM yyyy" Start="CalendarView.Year" Depth="CalendarView.Year" ShowClearButton="true">
+                                        <DatePickerEvents TValue="DateTime?" ValueChange="ValueChangeHandler"></DatePickerEvents>
+                                    </SfDatePicker>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                     
+                                    </div>
+                                    @if (ShowButtons)
+                                    {
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="Generate">Send</label>
+                                                <button @onclick="SendEmail" class="btn btn-success">Send Email</button>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                    <div class="row">
+                        <SfGrid DataSource="@GridData" AllowPaging="true" Toolbar="@Tool">
+                            <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                            </GridPageSettings>
+                            <GridEvents TValue="BethanysPieShopHRM.Shared.Bills"></GridEvents>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(Bills.BillNo) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(Bills.FlatNo) HeaderText="FlatNo" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(Bills.cycle_from) HeaderText="From" Format="d" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(Bills.cycle_to) HeaderText="To" Format="d" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(Bills.current_bill) HeaderText="Current Bill" Width="140"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<div class="col-lg-4 control-section">
+    <SfToast @ref="ToastObj" ID="toast_type">
+        <ToastPosition X="@ToastPosition"></ToastPosition>
+    </SfToast>
+</div>
+
+
+@code {
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+}

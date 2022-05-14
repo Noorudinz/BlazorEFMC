@@ -56,5 +56,11 @@ namespace BethanysPieShopHRM.Server.Implementation
             return await JsonSerializer.DeserializeAsync<List<Bills>>
                  (await _httpClient.GetStreamAsync($"api/Invoice/GenerateBill/{selectedDate}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
+        public async Task<List<Bills>> SendBills(string selectedDate)
+        {
+            return await JsonSerializer.DeserializeAsync<List<Bills>>
+                 (await _httpClient.GetStreamAsync($"api/Invoice/SendMailGeneratedBills/{selectedDate}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
     }
 }

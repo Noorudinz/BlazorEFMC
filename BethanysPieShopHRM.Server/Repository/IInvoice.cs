@@ -15,6 +15,7 @@ namespace BethanysPieShopHRM.Server.Repository
         Task<List<Bills>> GetMailListToSendByPeriods(DateTime selectedDate);
         Task<Bills> InvoiceDetails(long billNo);
         Task<List<Bills>> GenerateBills(string selectedDate);
+        Task<List<Bills>> SendBills(string selectedDate);
 
     }
 }

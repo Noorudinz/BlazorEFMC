@@ -69,5 +69,12 @@ namespace BethanysPieShopHRM.Api.Controllers
         {
             return Ok(_invoiceRepo.GenerateBill(selectedDate));
         }
+
+        [HttpGet]
+        [Route("SendMailGeneratedBills/{selectedDate}")]
+        public async Task<IActionResult> SendMailGeneratedBills(DateTime selectedDate)
+        {
+            return Ok(_invoiceRepo.SendMailBill(selectedDate));
+        }
     }
 }

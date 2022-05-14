@@ -42,9 +42,11 @@ namespace BethanysPieShopHRM.Api.Controllers
 
         [HttpGet]
         [Route("InvoiceByPeriods/{selectedDate}")]
-        public async Task<IActionResult> InvoiceByPeriods(DateTime selectedDate)
+        public async Task<IActionResult> InvoiceByPeriods(string selectedDate)
         {
-          return Ok(_invoiceRepo.InvoiceByPeriods(selectedDate));
+            var selectDate = Convert.ToDateTime(selectedDate);
+
+            return Ok(_invoiceRepo.InvoiceByPeriods(selectDate));
         }
 
         [HttpGet]
@@ -52,6 +54,20 @@ namespace BethanysPieShopHRM.Api.Controllers
         public async Task<IActionResult> GetMailListToSendByPeriods(DateTime selectedDate)
         {
             return Ok(_invoiceRepo.GetMailListToSendByPeriods(selectedDate));
+        }
+
+        [HttpGet]
+        [Route("InvoiceDetail/{billNo}")]
+        public async Task<IActionResult> InvoiceDetail(Int64 billNo)
+        {
+            return Ok(_invoiceRepo.InvoiceDetails(billNo));
+        }
+
+        [HttpGet]
+        [Route("GenerateBill/{selectedDate}")]
+        public async Task<IActionResult> GenerateBill(DateTime selectedDate)
+        {
+            return Ok(_invoiceRepo.GenerateBill(selectedDate));
         }
     }
 }

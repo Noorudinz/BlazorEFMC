@@ -1,0 +1,109 @@
+﻿@page "/invoiceList"
+@using Syncfusion.Blazor.Calendars
+@using BethanysPieShopHRM.Server.Repository;
+@using BethanysPieShopHRM.Shared;
+@using Syncfusion.Blazor.Grids
+
+@{
+    var Tool = (new List<string>() { "Search" });
+}
+
+<h1>Import BTU</h1>
+
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="possesionDate">Select Month</label>                              
+                                <SfDatePicker Max="MaxDate" Value="DateValue" Placeholder="Choose a Month" Format="MMMM yyyy" Start="CalendarView.Year" Depth="CalendarView.Year" ShowClearButton="true">
+                                    <DatePickerEvents TValue="DateTime?"  ValueChange="ValueChangeHandler"></DatePickerEvents>
+                                </SfDatePicker>
+                            </div>
+                        </div>                        
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <SfGrid DataSource="@GridData" AllowPaging="true" Toolbar="@Tool">
+                            <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                            </GridPageSettings>
+                            <GridEvents CommandClicked="OnCommandClicked" TValue="BethanysPieShopHRM.Shared.Bills"></GridEvents>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.BillNo) HeaderText="Id" IsPrimaryKey="true" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.FlatNo) HeaderText="FlatNo" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.cycle_from) HeaderText="From" Format="d" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.cycle_to) HeaderText="To" Format="d" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.BTU_amount) HeaderText="BTU Amt" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.electricity_amount) HeaderText="Elect Amt" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.water_amount) HeaderText="Water Amt" Width="140"></GridColumn>
+                                <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Bills.water_amount) HeaderText="Current Bill" Width="140"></GridColumn>
+                                <GridColumn HeaderText="Action" Width="80">
+                                    <GridCommandColumns>
+                                        <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                                    </GridCommandColumns>
+                                </GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    public DateTime MaxDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+    [Inject]
+    public IInvoice InvoiceDataService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<BethanysPieShopHRM.Shared.Bills> GridData { get; set; }
+
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        GridData = (await InvoiceDataService.InvoiceByFlatNo()).ToList();
+    }
+
+
+    public void OnCommandClicked(CommandClickEventArgs<BethanysPieShopHRM.Shared.Bills> args)
+    {
+        if (args.RowData != null)
+        {
+            if (args.CommandColumn.Type == CommandButtonType.Edit)
+            {
+                NavigationManager.NavigateTo("/invoiceBillNo/" + args.RowData.BillNo);
+            }
+        }
+    }
+
+    public async void ValueChangeHandler(ChangedEventArgs<DateTime?> args)
+    {
+        string selectedDate = Convert.ToDateTime(args.Value).ToString("yyyy/MM/dd");
+        GridData = (await InvoiceDataService.InvoiceByPeriods(selectedDate)).ToList();
+    }
+}
+
+<style>
+    .control-wrapper {
+        max-width: 250px;
+        margin: 0 auto;
+        padding: 50px 0px 0px;
+    }
+
+    .example-label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+</style>

@@ -39,16 +39,22 @@ namespace BethanysPieShopHRM.Server.Implementation
                (await _httpClient.GetStreamAsync($"api/Invoice/InvoiceByFlatNo"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<List<Bills>> InvoiceByPeriods(DateTime selectedDate)
+        public async Task<List<Bills>> InvoiceByPeriods(string selectedDate)
         {
-            var r = await JsonSerializer.DeserializeAsync<List<Bills>>
+          return await JsonSerializer.DeserializeAsync<List<Bills>>
                 (await _httpClient.GetStreamAsync($"api/Invoice/InvoiceByPeriods/{selectedDate}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-            return r;
+           
         }
 
         public Task<List<Bills>> InvoiceByBillNo(long billNo)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Bills>> GenerateBills(string selectedDate)
+        {
+            return await JsonSerializer.DeserializeAsync<List<Bills>>
+                 (await _httpClient.GetStreamAsync($"api/Invoice/GenerateBill/{selectedDate}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
     }
 }

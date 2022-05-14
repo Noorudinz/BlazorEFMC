@@ -90,7 +90,7 @@
 
     public async void ValueChangeHandler(ChangedEventArgs<DateTime?> args)
     {
-        DateTime selectedDate = Convert.ToDateTime(args.Value);
+        string selectedDate = Convert.ToDateTime(args.Value).ToString("yyyy/MM/dd");
         GridData = (await InvoiceDataService.InvoiceByPeriods(selectedDate)).ToList();
     }
 }

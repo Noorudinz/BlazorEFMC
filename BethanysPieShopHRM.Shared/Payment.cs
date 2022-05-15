@@ -16,4 +16,10 @@ namespace BethanysPieShopHRM.Shared
         public DateTime? updated_date { get; set; }
 
     }
+
+    public class CommonResponse
+    {
+        public string Message { get; set; }
+        public bool IsUpdated { get; set; }
+    }
 }

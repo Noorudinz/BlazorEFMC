@@ -1,21 +1,27 @@
 ﻿@page "/receiptList"
 @inherits ReceiptBase
+@{ 
+
+}
 
 <h1 class="page-title">Receipts</h1>
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
+
         <div class="row">
-            <SfGrid DataSource="@GridData" AllowPaging="true">
+            <SfGrid DataSource="@GridData" AllowPaging="true" Toolbar="@(new List<string>() { "Search" })">
+                <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                </GridPageSettings>
                 <GridEvents CommandClicked="OnCommandClicked" TValue="BethanysPieShopHRM.Shared.Receipt"></GridEvents>
                 <GridColumns>
-                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.FlatNo) HeaderText="BuildingId" IsPrimaryKey="true" Visible="false"></GridColumn>
-                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.PaymentMode) HeaderText="BuildingCode" Width="100"></GridColumn>
-                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.Bank) HeaderText="Incharge" Width="140"></GridColumn>
-                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.AmountReceived) HeaderText="ARF" Width="100"></GridColumn>
-                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.ReceivedBy) HeaderText="ERF" Width="100"></GridColumn>
-                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.CreatedDate) HeaderText="WRF" Width="100"></GridColumn>
-                    <GridColumn HeaderText="Manage Records" Width="150">
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.FlatNo) HeaderText="BuildingId" IsPrimaryKey="true" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.PaymentMode) HeaderText="PaymentMode" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.Bank) HeaderText="Bank" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.AmountReceived) HeaderText="AmountReceived" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.ReceivedBy) HeaderText="ReceivedBy" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.Receipt.CreatedDate) HeaderText="CreatedDate" Format="d" Width="100"></GridColumn>
+                    <GridColumn HeaderText="Manage" Width="100">
                         <GridCommandColumns>
                             <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss=" e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
                         </GridCommandColumns>
@@ -27,10 +33,11 @@
 </div>
 
 
-@*<button @onclick="@AddBuilding" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+<button @onclick="@EditReceipt" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
 
-<AddBuildingDialog @ref="AddBuildingDialog" CloseEventCallback="@AddBuildingDialog_OnDialogClose"></AddBuildingDialog>*@
+<EditReceiptDialog @ref="EditReceiptgDialog"></EditReceiptDialog>
 
 @code {
 
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 }

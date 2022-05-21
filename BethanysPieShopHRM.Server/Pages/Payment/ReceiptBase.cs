@@ -1,4 +1,5 @@
-﻿using BethanysPieShopHRM.Server.Repository;
+﻿using BethanysPieShopHRM.Server.Components;
+using BethanysPieShopHRM.Server.Repository;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Grids;
 using System;
@@ -15,7 +16,23 @@ namespace BethanysPieShopHRM.Server.Pages.Payment
 
         public List<BethanysPieShopHRM.Shared.Receipt> GridData { get; set; }
 
+        protected EditReceiptDialogBase EditReceiptgDialog { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            GridData = await PaymentDataService.GetReceiptList();
+        }
+
+        protected void EditReceipt()
+        {
+            EditReceiptgDialog.ShowEdit();
+        }
+
+        public async void EditReceipt_OnDialogClose()
+        {
+            GridData = (await PaymentDataService.GetReceiptList()).ToList();
+            StateHasChanged();
+        }
 
         public void OnCommandClicked(CommandClickEventArgs<BethanysPieShopHRM.Shared.Receipt> args)
         {

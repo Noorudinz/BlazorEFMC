@@ -22,11 +22,9 @@ namespace BethanysPieShopHRM.Server.Components
         [Inject]
         public IPayment PaymentDataService { get; set; }
 
-        public async void ShowEdit(string Id)
+        public async void ShowEdit()
         {
-
-            //receipt = (await PaymentDataService.get(Id));
-
+            ResetDialog();
             ShowDialog = true;
             StateHasChanged();
 
@@ -45,21 +43,21 @@ namespace BethanysPieShopHRM.Server.Components
 
         protected async Task HandleValidSubmit()
         {
-           // var response = await PaymentDataService.AddReceipt(receipt);
+            var response = await PaymentDataService.AddReceipt(receipt);
 
-            //if (response.Successful)
-            //{
-            //    ShowDialog = false;
+            if (response.IsUpdated)
+            {
+                ShowDialog = false;
 
-            //    await CloseEventCallback.InvokeAsync(true);
-            //    StateHasChanged();
-            //}
-            //else
-            //{
-            //    StatusClass = "alert-danger";
-            //    ErrorMsg = string.Join(",", response.Errors.ToArray());
+                await CloseEventCallback.InvokeAsync(true);
+                StateHasChanged();
+            }
+            else
+            {
+                StatusClass = "alert-danger";
+                ErrorMsg = string.Join(",", response.Message.ToArray());
 
-            //}
+            }
 
         }
     }

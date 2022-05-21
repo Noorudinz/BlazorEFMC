@@ -1,0 +1,57 @@
+﻿
+@page "/receiptDetail/{flatNo}"
+@inherits ReceiptDetailBase
+
+
+<section class="content">
+    <div class="container-fluid">
+        <button class="btn btn-primary" @onclick="@BackToList">Back</button>
+        <br><br>
+        <!-- Timelime example  -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- The time line -->
+                @foreach (var receipt in ReceiptList)
+                {
+                    <div class="timeline">
+
+                        @*<div class="time-label">
+                            <span class="bg-green">@receipt.CreatedDate</span>
+                        </div>*@
+                        <br />
+                        <div>
+                             <div class="timeline-body">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <p class="card-title">
+                                            <i class="fas fa-text-width"></i>
+                                            @receipt.Narration
+                                        </p>
+                                        <span class="float-right"><button class="btn btn-default">Print</button></span>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <dl>
+                                            <dt>Receipt No:   @receipt.ReceiptNo</dt>
+                                            <dt>Bill No:   @receipt.BillNo</dt>
+                                            <dt>Payment mode: @receipt.PaymentMode</dt>
+                                            <dt>Amount Received:  @receipt.AmountReceived</dt>
+                                            <dt>Received By:   @receipt.ReceivedBy</dt>
+                                            <dt><span class="time"><i class="fas fa-clock"></i>:   @receipt.CreatedDate</span></dt>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+
+            </div>
+            <!-- /.col -->
+        </div>
+        <button class="btn btn-primary" @onclick="@BackToList">Back</button>
+    </div>
+    <!-- /.timeline -->
+
+</section>

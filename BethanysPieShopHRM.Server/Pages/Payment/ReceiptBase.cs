@@ -14,6 +14,9 @@ namespace BethanysPieShopHRM.Server.Pages.Payment
         [Inject]
         public IPayment PaymentDataService { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         public List<BethanysPieShopHRM.Shared.Receipt> GridData { get; set; }
 
         protected EditReceiptDialogBase EditReceiptgDialog { get; set; }
@@ -40,7 +43,7 @@ namespace BethanysPieShopHRM.Server.Pages.Payment
             {
                 if (args.CommandColumn.Type == CommandButtonType.Edit)
                 {
-                    //EditBuildingDialog.ShowEdit(args.RowData.BuildingId);
+                    NavigationManager.NavigateTo("/receiptDetail/" + args.RowData.FlatNo);
                 }
             }
         }

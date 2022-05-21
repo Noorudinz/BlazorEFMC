@@ -49,9 +49,10 @@ namespace BethanysPieShopHRM.Server.Implementation
             throw new NotImplementedException();
         }
 
-        Task<Receipt> IPayment.GetReceiptByReceiptNo(string flatNo)
+        public async Task<List<Receipt>> GetReceiptByReceiptNo(string flatNo)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<List<Receipt>>
+                (await _httpClient.GetStreamAsync($"api/Payments/GetReceiptByReceiptNo/{flatNo}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         Task<List<AccountSummary>> IPayment.GetSummaryByFlatNo(string flatNo)

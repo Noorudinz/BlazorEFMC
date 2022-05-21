@@ -10,8 +10,8 @@
 
         <EditForm Model="@FlatOwner" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
 
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+            @*<DataAnnotationsValidator />
+            <ValidationSummary />*@
             <div class="form-row">
                 <div class="col">
                     @*<input type="text" class="form-control" placeholder="Flat No">*@
@@ -24,7 +24,7 @@
                             <option value="@building.BuildingId">@building.BuildingName</option>
                             }
                     </InputSelect>
-                    <ValidationMessage For="@(() => FlatOwner.Building)" />
+                    @*<ValidationMessage For="@(() => FlatOwner.Building)" />*@
                 </div>
             </div>
             <br />

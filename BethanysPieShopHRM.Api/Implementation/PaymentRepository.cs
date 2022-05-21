@@ -83,20 +83,32 @@ namespace BethanysPieShopHRM.Api.Implementation
 
         public List<AccountSummary> GetLastSummaryDetail()
         {
-            List<AccountSummary> summary = new List<AccountSummary>();
-
-            foreach (var flatDet in _context.FlatOwner)
+            try
             {
-                var filteredRecords = _context.AccountSummary.Where(e => e.FlatNo == flatDet.FlatNo)
+                List<AccountSummary> summary = new List<AccountSummary>();
+
+                var flatsOwner = _context.FlatOwner.ToList();
+
+                foreach (var flatDet in flatsOwner)
+                {                  
+                    var filteredRecords = _context.AccountSummary.Where(e => e.FlatNo == flatDet.FlatNo)
                     .OrderBy(e => e.AccontNo).Last();
 
-                summary.Add(filteredRecords);
+                    summary.Add(filteredRecords);                    
+                   
+                }
+
+                var sortedRecords = summary.OrderByDescending(e => e.AccontNo).ToList();
+
+                return (sortedRecords);
             }
-
-            var sortedRecords = summary.OrderByDescending(e => e.AccontNo).ToList();
-
-            return (sortedRecords);
+            catch(Exception ex)
+            {
+                return null;
+            }
+          
         }
+
 
         public PriceFactor GetPriceFactor()
         {

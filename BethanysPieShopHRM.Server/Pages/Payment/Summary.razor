@@ -1,0 +1,37 @@
+﻿@page "/summaryList"
+@inherits SummaryListBase
+
+
+<h1 class="page-title">Summary</h1>
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+
+        <div class="row">
+            <SfGrid DataSource="@GridData" AllowPaging="true" Toolbar="@(new List<string>() { "Search" })">
+                <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                </GridPageSettings>
+                <GridEvents CommandClicked="OnCommandClicked" TValue="BethanysPieShopHRM.Shared.AccountSummary"></GridEvents>
+                <GridColumns>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.FlatNo) HeaderText="FlatNo" IsPrimaryKey="true" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Narration) HeaderText="Narration" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Charge) HeaderText="Charges Amt" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Receipts) HeaderText="Receipt Amt" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Amount) HeaderText="Tot Amt Due" Width="100"></GridColumn>
+                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.created_date) HeaderText="CreatedDate" Format="d" Width="100"></GridColumn>
+                    <GridColumn HeaderText="Manage" Width="100">
+                        <GridCommandColumns>
+                            <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() {IconCss=" e-icons e-edit", CssClass="e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+}

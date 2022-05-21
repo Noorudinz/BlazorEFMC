@@ -39,9 +39,10 @@ namespace BethanysPieShopHRM.Server.Implementation
             return null;
         }
 
-        Task<List<AccountSummary>> IPayment.GetLastSummaryDetail()
+        public async Task<List<AccountSummary>> GetLastSummaryDetail()
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<List<AccountSummary>>
+                (await _httpClient.GetStreamAsync($"api/Payments/GetLastSummaryDetail"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         Task<PriceFactor> IPayment.GetPriceFactor()
@@ -55,9 +56,10 @@ namespace BethanysPieShopHRM.Server.Implementation
                 (await _httpClient.GetStreamAsync($"api/Payments/GetReceiptByReceiptNo/{flatNo}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        Task<List<AccountSummary>> IPayment.GetSummaryByFlatNo(string flatNo)
+        public async Task<List<AccountSummary>> GetSummaryByFlatNo(string flatNo)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<List<AccountSummary>>
+               (await _httpClient.GetStreamAsync($"api/Payments/GetSummaryByFlatNo/{flatNo}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         Task<CommonResponse> IPayment.UpdatePriceFactor(PriceFactor priceFactor)

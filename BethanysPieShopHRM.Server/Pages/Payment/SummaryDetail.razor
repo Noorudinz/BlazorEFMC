@@ -1,0 +1,53 @@
+﻿@page "/summaryDetail/{flatNo}"
+@inherits SummaryDetailBase
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <button class="btn btn-primary"  @onclick="@BackToList">Back</button> &nbsp;
+            <button class="btn btn-default">Print</button>
+            <br><br>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Summary details for the flat:&nbsp; <b>@flatNo</b></h3>
+
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <h3 class="card-title">Amount due: <b>@amount</b></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="row">
+                            <SfGrid DataSource="@SummaryDetailList" AllowPaging="true" Toolbar="@(new List<string>() { "Search" })">
+                                <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+                                </GridPageSettings>
+                                 <GridColumns>
+                                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.created_date) Format="d" HeaderText="Trans Date"  Width="100"></GridColumn>
+                                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Narration) HeaderText="Narration" Width="200"></GridColumn>
+                                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Charge) HeaderText="Charge Amt" Width="100"></GridColumn>
+                                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Receipts) HeaderText="Receipt Amt" Width="100"></GridColumn>
+                                    <GridColumn Field=@nameof(BethanysPieShopHRM.Shared.AccountSummary.Amount) HeaderText="Tot Amt" Width="100"></GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+
+            <button class="btn btn-primary" @onclick="@BackToList">Back</button>
+        </div>
+
+
+    </section>
+    <!-- /.content -->
+
+    @code {
+        string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+    }

@@ -1,5 +1,6 @@
 ﻿using BethanysPieShopHRM.Api.Models;
 using BethanysPieShopHRM.Api.Repository;
+using BethanysPieShopHRM.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

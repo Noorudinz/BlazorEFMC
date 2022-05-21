@@ -8,7 +8,7 @@ namespace BethanysPieShopHRM.Shared
 {
     public class FlatOwner
     {
-        //[Key]
+        [Key]
         public int FlatId { get; set; }
         [Required]
         public int BuildingId { get; set; }

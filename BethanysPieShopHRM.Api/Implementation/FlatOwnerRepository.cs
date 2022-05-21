@@ -1,9 +1,10 @@
-﻿using BethanysPieShopHRM.Api.Models;
+﻿using BethanysPieShopHRM.Shared;
 using BethanysPieShopHRM.Api.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BethanysPieShopHRM.Api.Models;
 
 namespace BethanysPieShopHRM.Api.Implementation
 {
@@ -15,7 +16,7 @@ namespace BethanysPieShopHRM.Api.Implementation
             _context = appDbContext;
         }
 
-        public CommonResponse AddFlatOwner(FlatOwner flatOwner)
+        public CommonResponse AddFlatOwner(Shared.FlatOwner flatOwner)
         {
             return (new CommonResponse()
             {
@@ -33,17 +34,17 @@ namespace BethanysPieShopHRM.Api.Implementation
             });
         }
 
-        public FlatOwner GetFlatOwnerByFlatId(int flatId)
+        public Shared.FlatOwner GetFlatOwnerByFlatId(int flatId)
         {
             return (_context.FlatOwner.Where(a => a.FlatId == flatId).FirstOrDefault());
         }
 
-        public FlatOwner GetFlatOwnerByFlatNo(string flatNo)
+        public Shared.FlatOwner GetFlatOwnerByFlatNo(string flatNo)
         {
             return (_context.FlatOwner.Where(a => a.FlatNo == flatNo).FirstOrDefault());
         }
 
-        public List<FlatOwner> GetFlatOwners()
+        public List<Shared.FlatOwner> GetFlatOwners()
         {
             return (_context.FlatOwner.ToList());
         }

@@ -61,5 +61,13 @@ namespace BethanysPieShopHRM.Api.Controllers
         {
             return Ok(_paymentRepo.UpdatePriceFactor(priceFactor));
         }
+
+        [HttpPost]
+        [Route("AddReceipt")]
+        public async Task<IActionResult> AddReceipt(Receipt receipt)
+        {
+            return Ok(_paymentRepo.AddReceipt(receipt));        
+
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace BethanysPieShopHRM.Api.Models
 
         }
 
-        public DbSet<Building> Building { get; set; }
+        public DbSet<BethanysPieShopHRM.Shared.Building> Building { get; set; }
         public DbSet<FlatOwner> FlatOwner { get; set; }
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Receipt> Receipt { get; set; }
